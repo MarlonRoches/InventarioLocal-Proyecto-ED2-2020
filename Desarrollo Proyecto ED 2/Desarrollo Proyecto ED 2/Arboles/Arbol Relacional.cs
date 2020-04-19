@@ -16,14 +16,14 @@ namespace Desarrollo_Proyecto_ED_2.Arboles
             public int id { get; set; }
             public int Padre { get; set; }
             public int[] Hijos { get; set; }
-            public Sucursal_Producto[] Datos { get; set; }
+            public Relacion[] Datos { get; set; }
             public bool esHoja { get; set; }
 
             public NodoSF(int _grado, bool Tipo)
             {
                 if (Tipo)
                 {//si es hoja
-                    Datos = new Sucursal_Producto[_grado - 1];
+                    Datos = new Relacion[_grado - 1];
                     Hijos = new int[_grado];
                     esHoja = Tipo;
                     Grado = _grado;
@@ -32,7 +32,7 @@ namespace Desarrollo_Proyecto_ED_2.Arboles
                 { // es la raix
                     Grado = _grado;
                     var GradRaiz = Convert.ToInt32(1.33333 * (double)(_grado - 1));
-                    Datos = new Sucursal_Producto[GradRaiz];
+                    Datos = new Relacion[GradRaiz];
                     Hijos = new int[GradRaiz + 1];
                     esHoja = Tipo;
                 }
@@ -84,7 +84,7 @@ namespace Desarrollo_Proyecto_ED_2.Arboles
                 for (int i = 0; i < devolver.Datos.Length; i++)
                 {
                     var des = splited[contador].Replace("0", "");
-                    devolver.Datos[i] = JsonConvert.DeserializeObject<Sucursal_Producto>(des);
+                    devolver.Datos[i] = JsonConvert.DeserializeObject<Relacion>(des);
                     contador++;
                 }
                 return devolver;
@@ -146,7 +146,7 @@ namespace Desarrollo_Proyecto_ED_2.Arboles
                 }
                 file.Close();
             }
-            public void Insertar(Sucursal_Producto Nuevo)
+            public void Insertar(Relacion Nuevo)
             {
                 var FILE = new FileStream(GlobalPath, FileMode.Open);
                 var lector = new StreamReader(FILE);
@@ -192,10 +192,10 @@ namespace Desarrollo_Proyecto_ED_2.Arboles
 
                 }
             }
-            public int Indice(NodoSF Actual, Sucursal_Producto Nuevo)
+            public int Indice(NodoSF Actual, Relacion Nuevo)
             {
                 var iActualndice = 0;
-                var listacomparar = new List<Sucursal_Producto>();
+                var listacomparar = new List<Relacion>();
                 foreach (var item in Actual.Datos)
                 {
                     if (item != null)
@@ -223,9 +223,9 @@ namespace Desarrollo_Proyecto_ED_2.Arboles
                 return iActualndice;
 
             }
-            public void SortDatos(Sucursal_Producto[] A_Arreglar)
+            public void SortDatos(Relacion[] A_Arreglar)
             {
-                var lista = new List<Sucursal_Producto>();
+                var lista = new List<Relacion>();
                 foreach (var item in A_Arreglar)
                 {
                     if (item != null)
@@ -245,9 +245,9 @@ namespace Desarrollo_Proyecto_ED_2.Arboles
             {
 
             }
-            public void PrimeraSeparacion(NodoSF Actual, Sucursal_Producto Nuevo)
+            public void PrimeraSeparacion(NodoSF Actual, Relacion Nuevo)
             {
-                var lista = new List<Sucursal_Producto>();
+                var lista = new List<Relacion>();
                 foreach (var item in Actual.Datos)
                 {
                     lista.Add(item);
@@ -332,7 +332,7 @@ namespace Desarrollo_Proyecto_ED_2.Arboles
                 file.Close();
                 return new NodoSF(Grado, true).ReadNodo(linea);
             }
-            public void InsertarEnHoja(NodoSF actual, Sucursal_Producto Nuevo)
+            public void InsertarEnHoja(NodoSF actual, Relacion Nuevo)
             {
                 var index = Indice(actual, Nuevo);
                 if (actual.Hijos[index] == 0)
@@ -403,7 +403,7 @@ namespace Desarrollo_Proyecto_ED_2.Arboles
                 file.Write(Encoding.ASCII.GetBytes(PadreNuevo.WriteNodo()), 0, (PadreNuevo.WriteNodo()).Length);
                 file.Close();
             }
-            public void CompartirDato(NodoSF Actual, Sucursal_Producto Nuevo)
+            public void CompartirDato(NodoSF Actual, Relacion Nuevo)
             {
                 var padre = SeekPadre(Actual.Padre);
                 var IndicesHijos = new List<int>();
@@ -480,7 +480,7 @@ namespace Desarrollo_Proyecto_ED_2.Arboles
 
             }
 
-            public void PartirHaciaLaDerecha(NodoSF Hijo, NodoSF Hermano, Sucursal_Producto Nuevo)
+            public void PartirHaciaLaDerecha(NodoSF Hijo, NodoSF Hermano, Relacion Nuevo)
             {
                 var padre = SeekPadre(Hijo.Padre);
                 var NuevoHermano = new NodoSF(Grado, true)
@@ -490,7 +490,7 @@ namespace Desarrollo_Proyecto_ED_2.Arboles
                 };
 
                 Siguiente++;
-                var lista = new List<Sucursal_Producto>();
+                var lista = new List<Relacion>();
                 //llenamos la lista
                 foreach (var item in padre.Datos)
                 {
@@ -528,12 +528,12 @@ namespace Desarrollo_Proyecto_ED_2.Arboles
                 lista.Add(Nuevo);
                 var array = lista.ToArray();
                 SortDatos(array);
-                lista = array.ToList<Sucursal_Producto>();
+                lista = array.ToList<Relacion>();
                 var minimo = ((2 * Grado) - 1) / 3;
-                var listaPadre = new List<Sucursal_Producto>();
-                var listaHijo = new List<Sucursal_Producto>();
-                var listaHermano = new List<Sucursal_Producto>();
-                var listaNuevo = new List<Sucursal_Producto>();
+                var listaPadre = new List<Relacion>();
+                var listaHijo = new List<Relacion>();
+                var listaHermano = new List<Relacion>();
+                var listaNuevo = new List<Relacion>();
                 for (int i = 0; i < minimo; i++)
                 {
                     listaHijo.Add(lista[0]);
@@ -611,7 +611,7 @@ namespace Desarrollo_Proyecto_ED_2.Arboles
                 EscribirHijo(Hermano.id, Hermano);
                 EscribirHijo(NuevoHermano.id, NuevoHermano);
             }
-            public void CompartirHaciaLaDerecha(NodoSF Sharing, int[] Camino, Sucursal_Producto Nuevo)
+            public void CompartirHaciaLaDerecha(NodoSF Sharing, int[] Camino, Relacion Nuevo)
             {
                 var sube = Sharing.Datos[Sharing.Datos.Length - 1];
                 Sharing.Datos[Sharing.Datos.Length - 1] = Nuevo;
@@ -643,13 +643,13 @@ namespace Desarrollo_Proyecto_ED_2.Arboles
                 }
             }
 
-            public void CompartirHaciaLaIzquierda(NodoSF Sharing, int[] IndiceHermano, Sucursal_Producto Nuevo)
+            public void CompartirHaciaLaIzquierda(NodoSF Sharing, int[] IndiceHermano, Relacion Nuevo)
             {
 
                 var padre = SeekPadre(Sharing.Padre);
                 var HermanoIzquierdo = SeekHijo(IndiceHermano[0]);
 
-                var listaactual = Sharing.Datos.ToList<Sucursal_Producto>();
+                var listaactual = Sharing.Datos.ToList<Relacion>();
                 listaactual.Add(Nuevo);
                 listaactual.Sort((x, y) => x.Nombre.CompareTo(y.Nombre));
                 var datoBaja = padre.Datos[Indice(padre, Nuevo) - 1];
@@ -684,7 +684,7 @@ namespace Desarrollo_Proyecto_ED_2.Arboles
             }
             public int PuedeRecibir(NodoSF Prestamista)
             {
-                var datos = new List<Sucursal_Producto>();
+                var datos = new List<Relacion>();
                 for (int i = 0; i < Prestamista.Grado - 1; i++)
                 {
                     if (Prestamista.Datos[i] != null)

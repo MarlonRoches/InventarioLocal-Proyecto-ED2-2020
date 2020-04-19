@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,8 +11,10 @@ namespace Desarrollo_Proyecto_ED_2
     {
         static void Main(string[] args)
         {
-            //B*
             //Datos Guardados, cifrados
+            
+            Singleton.Ins.CrearTablas();
+
             //id unico
             //match exacto
             //datos transportables
