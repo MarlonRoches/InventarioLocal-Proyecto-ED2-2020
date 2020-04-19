@@ -213,7 +213,7 @@ namespace Desarrollo_Proyecto_ED_2
                         break;
 
                     }
-                    else if (String.Compare(Nuevo.Nombre, listacomparar[iActualndice].Nombre) == -1)
+                    else if (String.Compare(Nuevo.Nombre.ToString(), listacomparar[iActualndice].Nombre.ToString()) == -1)
                     {
 
                         break;

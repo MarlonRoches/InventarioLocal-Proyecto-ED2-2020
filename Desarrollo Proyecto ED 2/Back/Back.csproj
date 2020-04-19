@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Desarrollo Proyecto ED 2\Modelos\Producto.cs" Link="Producto.cs" />
+    <Compile Include="..\Desarrollo Proyecto ED 2\Modelos\Sucursal.cs" Link="Sucursal.cs" />
+    <Compile Include="..\Desarrollo Proyecto ED 2\Modelos\Sucursal_Producto.cs" Link="Sucursal_Producto.cs" />
+  </ItemGroup>
+
+
+</Project>
