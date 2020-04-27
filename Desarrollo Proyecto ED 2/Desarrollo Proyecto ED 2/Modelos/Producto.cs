@@ -8,8 +8,8 @@ namespace Desarrollo_Proyecto_ED_2
 {
     class Producto
     {
-        int Id { get; set; }
-        public int Nombre   {get;set;}
-        string Direccion{get;set;}
+        public int Id { get; set; }
+        public string Nombre   {get;set;}
+        public double Precio{get;set;}
     }
 }

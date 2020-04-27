@@ -8,8 +8,8 @@ namespace Desarrollo_Proyecto_ED_2
 {
     class Sucursal
     {
-        int Id { get; set; }
+       public int Id { get; set; }
         public string Nombre { get; set; }
-        double Precio { get; set; }
+        public string Direccion { get; set; }
     }
 }

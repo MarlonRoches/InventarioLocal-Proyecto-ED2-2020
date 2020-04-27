@@ -8,9 +8,8 @@ namespace Desarrollo_Proyecto_ED_2
 {
     class Relacion
     {
-        int Id_Sucursal{get;set;}
-        int Id_Producto{get;set;}
-        int Stock {get;set;}
-        public string Nombre { get; set; }
+        public int Id_Sucursal{get;set;}
+        public int Id_Producto{get;set;}
+        public int Stock {get;set;}
     }
 }

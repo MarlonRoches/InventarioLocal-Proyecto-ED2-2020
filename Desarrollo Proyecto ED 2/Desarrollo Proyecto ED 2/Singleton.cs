@@ -29,59 +29,193 @@ namespace Desarrollo_Proyecto_ED_2
         Dictionary<string, Producto> Productos = new Dictionary<string, Producto>();
         Dictionary<string, Sucursal> Sucursales = new Dictionary<string, Sucursal>();
         Dictionary<string, Relacion> Relacion = new Dictionary<string, Relacion>();
+
+        public void AgregarSucursal(Sucursal Sucursal)
+        {
+            CargarSucursales();
+            if (!Sucursales.ContainsKey($"{Sucursal.Id}"))
+            {
+                Sucursales.Add($"{Sucursal.Id}", Sucursal);
+                var file = new FileStream("D:\\Pry_ED2\\Sucursales.txt",FileMode.Create);
+                var writer = new StreamWriter(file);
+                writer.Write(JsonConvert.SerializeObject(Sucursales));
+                writer.Close();
+                file.Close();
+            }
+            else
+            {
+                //ya existe la sucursal
+            }
+
+        }
+        public void AgregarProducto(Producto ProductoNuevo)
+        {
+            CargarProductos();
+            if (!Productos.ContainsKey($"{ProductoNuevo.Id}"))
+            {
+                Productos.Add($"{ProductoNuevo.Id}", ProductoNuevo);
+                var file = new FileStream("D:\\Pry_ED2\\Productos.txt", FileMode.Create);
+                var writer = new StreamWriter(file);
+                writer.Write(JsonConvert.SerializeObject(Productos));
+                writer.Close();
+                file.Close();
+            }
+            else
+            {
+                //ya existe la sucursal
+            }
+
+        }
+        public void AgregarProductoEnSucursal(int idSucursal, Producto Producto)
+        {
+            CargarProductos();
+            if (Productos.ContainsKey($"{Producto.Id}"))
+            {
+                CargarSucursales();
+                if (Sucursales.ContainsKey($"{idSucursal}"))
+                {
+                    CargarRelacion();
+                    if (!Relacion.ContainsKey($"{idSucursal}^{Producto.Id}"))
+                    {
+                        var NuevaRelacion = new Relacion()
+                        {
+                            Id_Producto = Producto.Id,
+                            Id_Sucursal = idSucursal,
+                            Stock = 1
+                        };
+                        Relacion.Add($"{idSucursal}^{Producto.Id}", NuevaRelacion);
+                    }
+                    else
+                    {
+                        Relacion[$"{idSucursal}^{Producto.Id}"].Stock++;
+                    }
+                }
+                else
+                {
+                    //no existe la sucursal
+
+                }
+                //comprimir y cifrar
+                var file = new FileStream("D:\\Pry_ED2\\Relacion.txt",FileMode.Create);
+                    var writer = new StreamWriter(file);
+                    writer.Write(JsonConvert.SerializeObject(Relacion));
+                    writer.Close();
+                    file.Close();
+                 
+            }
+            else
+            {
+                // no exisiste el producto
+            }
+
+
+
+        }
+
+
         #region Tablas
         public void CrearTablas()
         {
             if (!Directory.Exists("D:\\Pry_ED2"))
             {
                 DirectoryInfo di = Directory.CreateDirectory("D:\\Pry_ED2");
-            var File = new FileStream("D:\\Pry_ED2\\Productos.txt", FileMode.Create);
+                var File = new FileStream("D:\\Pry_ED2\\Productos.txt", FileMode.Create);
                 var wrtr = new StreamWriter(File);
-                //cifrar
-                wrtr.WriteLine("");
-                wrtr.Close();
-                File.Close();
-            File = new FileStream("D:\\Pry_ED2\\Sucursales.txt", FileMode.Create);
-                wrtr = new StreamWriter(File);
+
+                ////cifrar
+                //var cifrado = SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Productos));
+
+                ////comprimir
+                // Huffman(cifrado);
                 wrtr.WriteLine(JsonConvert.SerializeObject(Productos));
                 wrtr.Close();
                 File.Close();
-            File = new FileStream("D:\\Pry_ED2\\Relacion.txt", FileMode.Create);
+
+                File = new FileStream("D:\\Pry_ED2\\Sucursales.txt", FileMode.Create);
                 wrtr = new StreamWriter(File);
-                wrtr.WriteLine(JsonConvert.SerializeObject(Productos));
+                // cifrado = SDESCifrado("1011011001", "1101101101" ,JsonConvert.SerializeObject(Sucursales));
+                wrtr.WriteLine(JsonConvert.SerializeObject(Sucursales));
+
+                wrtr.Close();
+                File.Close();
+
+                File = new FileStream("D:\\Pry_ED2\\Relacion.txt", FileMode.Create);
+                // cifrado = SDESCifrado("1001101010", "0110010101", JsonConvert.SerializeObject(Relacion));
+                wrtr = new StreamWriter(File);
+                wrtr.WriteLine(JsonConvert.SerializeObject(Relacion));
                 wrtr.Close();
                 File.Close();
             }
-        }
+            else
+            {
+                if (!File.Exists("D:\\Pry_ED2\\Productos.txt"))
+                {
+                    var File = new FileStream("D:\\Pry_ED2\\Productos.txt", FileMode.Create);
+                    var wrtr = new StreamWriter(File);
 
+                    ////cifrar
+                    //var cifrado = SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Productos));
+
+                    ////comprimir
+                    // Huffman(cifrado);
+                    wrtr.WriteLine(JsonConvert.SerializeObject(Productos));
+                    wrtr.Close();
+                    File.Close();
+                }
+                if (!File.Exists("D:\\Pry_ED2\\Sucursales.txt"))
+                {
+                    var File = new FileStream("D:\\Pry_ED2\\Sucursales.txt", FileMode.Create);
+                    var wrtr = new StreamWriter(File);
+                    // cifrado = SDESCifrado("1011011001", "1101101101" ,JsonConvert.SerializeObject(Sucursales));
+                    wrtr.WriteLine(JsonConvert.SerializeObject(Sucursales));
+
+                    wrtr.Close();
+                    File.Close();
+                }
+                if (!File.Exists("D:\\Pry_ED2\\Relacion.txt"))
+                {
+                    var File = new FileStream("D:\\Pry_ED2\\Relacion.txt", FileMode.Create);
+                    // cifrado = SDESCifrado("1001101010", "0110010101", JsonConvert.SerializeObject(Relacion));
+                    var wrtr = new StreamWriter(File);
+                    wrtr.WriteLine(JsonConvert.SerializeObject(Relacion));
+                    wrtr.Close();
+                    File.Close();
+                }
+            }
+        }
         public void CargarProductos()
         {
-            var Raw = new StreamReader("D:\\Pry_ED2\\Productos.txt").ReadToEnd();
+            var Raw = new StreamReader("D:\\Pry_ED2\\Productos.txt");
+            var json = Raw.ReadToEnd();
+            Raw.Close();
             //descomprimir 
-            var descompreso = HuffmanDescompresion("ruta del  original");
-             //Descifrar//Descifrar
-             var descifrado = SDESDecifrado("1010101100", "1100110111","ruta");
-            Productos = JsonConvert.DeserializeObject<Dictionary<string, Producto>>(Raw);
-            
+            //var descompreso =HuffmanDescompresion("D:\\Pry_ED2\\Sucursales.txt");
+            //Descifrar
+            //var descifrado = SDESDecifrado("1011011001", "1101101101","ruta");
+            Productos = JsonConvert.DeserializeObject<Dictionary<string, Producto>>(json);
+
         }
         public void CargarSucursales()
         {
-            var Raw = new StreamReader("D:\\Pry_ED2\\Sucursales.txt").ReadToEnd();
+            var Raw = new StreamReader("D:\\Pry_ED2\\Sucursales.txt");
+            var json = Raw.ReadToEnd();
+            Raw.Close();
             //descomprimir 
-            var descompreso =HuffmanDescompresion("D:\\Pry_ED2\\Sucursales.txt");
+            //var descompreso =HuffmanDescompresion("D:\\Pry_ED2\\Sucursales.txt");
             //Descifrar
-            var descifrado = SDESDecifrado("1011011001", "1101101101","ruta");
-            Sucursales = JsonConvert.DeserializeObject<Dictionary<string, Sucursal>>(Raw);
-
+            //var descifrado = SDESDecifrado("1011011001", "1101101101","ruta");
+            Sucursales = JsonConvert.DeserializeObject<Dictionary<string, Sucursal>>(json);
         }
         public void CargarRelacion()
         {
-            var Raw = new StreamReader("D:\\Pry_ED2\\Relacion.txt").ReadToEnd();
+            var Raw = new StreamReader("D:\\Pry_ED2\\Relacion.txt");
+            var json = Raw.ReadToEnd();
+            Raw.Close();
             //descomprimir 
-            var descompreso = HuffmanDescompresion("ruta del  original");
-            //Descifrar //Descifrar
-            var descifrado =  SDESDecifrado("1001101010","0110010101","ruta");
-            Relacion = JsonConvert.DeserializeObject<Dictionary<string, Relacion>>(Raw);
+            //var descompreso =HuffmanDescompresion("D:\\Pry_ED2\\Sucursales.txt");
+            //Descifrar
+            //var descifrado = SDESDecifrado("1011011001", "1101101101","ruta");
+            Relacion = JsonConvert.DeserializeObject<Dictionary<string, Relacion>>(json);
 
         }
         #endregion
@@ -100,8 +234,8 @@ namespace Desarrollo_Proyecto_ED_2
         string index_leftshift1 = "12340";
         string[,] S0 = new string[4, 4];
         string[,] S1 = new string[4, 4];
+
         #endregion
-        
         #region MetodosSDES
 
         //CIFRANDO
@@ -145,13 +279,15 @@ namespace Desarrollo_Proyecto_ED_2
             var KEYAR = Generarkeys(originalkey);
             return KEYAR;
         }
-        public string SDESCifrado(string llave1, string llave2,string _path)
+        public void SDESCifrado(string llave1, string llave2)
         {
 
-            var Original = new FileStream(_path, FileMode.Open);
+            var Original = new FileStream(GlobalPath, FileMode.Open);
             var lector = new BinaryReader(Original);
             var buffer = new byte[100000];
-            var salida = "";
+            var nombrearchivo = $"{Path.GetFileName(Original.Name).Split('.')[0]}_.{"scif"}";
+            var encoded = new FileStream(original_path + "\\" + nombrearchivo, FileMode.OpenOrCreate);
+            var writer = new BinaryWriter(encoded);
             while (lector.BaseStream.Position != lector.BaseStream.Length)
             {
                 buffer = lector.ReadBytes(100000);
@@ -159,20 +295,23 @@ namespace Desarrollo_Proyecto_ED_2
                 {
                     var caracter = (char)item;
                     var bin = Convert.ToString(item, 2).PadLeft(8, '0');
-                   salida+=(char)Convert.ToByte(BinarioADecimal(ProcesoSDES(llave1, llave2, bin)));
-                    
+                    var monitor = Convert.ToByte(BinarioADecimal(CifradoSDES(llave1, llave2, bin)));
+                    caracter = (char)monitor;
+                    writer.Write(monitor);
                 }
             }
             Original.Close();
-            return salida;
+            encoded.Close();
         }
         //decifrado
-        public string SDESDecifrado(string llave1, string llave2, string _path)
+        public void SDESDecifrado(string llave1, string llave2)
         {
-            var Cifrado = new FileStream(_path, FileMode.Open);
+            var Cifrado = new FileStream(GlobalPath, FileMode.Open);
             var lector = new BinaryReader(Cifrado);
             var nombrearchivo = $"{Path.GetFileName(Cifrado.Name).Split('.')[0]}_.{"txt"}";
-            var salida = "";
+
+            var decoded = new FileStream(original_path + "\\" + nombrearchivo, FileMode.OpenOrCreate);
+            var writer = new BinaryWriter(decoded);
             var buffer = new byte[100000];
             while (lector.BaseStream.Position != lector.BaseStream.Length)
             {
@@ -180,18 +319,18 @@ namespace Desarrollo_Proyecto_ED_2
                 foreach (var item in buffer)
                 {
                     var bin = Convert.ToString(item, 2).PadLeft(8, '0');
-                    var monitor =(char) Convert.ToByte(BinarioADecimal(ProcesoSDES(llave2, llave1, bin)));
-                    salida +=monitor;
+                    var monitor = Convert.ToByte(BinarioADecimal(CifradoSDES(llave2, llave1, bin)));
+                    writer.Write(monitor);
                 }
             }
+            decoded.Close();
             Cifrado.Close();
-            return salida;
         }
 
-        string ProcesoSDES(string key1, string key2, string actual)
+        string CifradoSDES(string key1, string key2, string actual)
         {
             //1 permutar 8
-            var entrada = inicial(actual);
+            var entrada = Inicial(actual);
 
             //2 tomar izquierda y derecha 
             var Mitadizquierda = entrada.Substring(0, 4);
@@ -324,7 +463,7 @@ namespace Desarrollo_Proyecto_ED_2
             }
             return IP8RevReturn;
         }
-        string inicial(string actual)
+        string Inicial(string actual)
         {
             var iniciaretl = string.Empty;
             foreach (var index in index_inicial)
@@ -370,443 +509,208 @@ namespace Desarrollo_Proyecto_ED_2
             return permmuted;
         }
         #endregion
+        public void CompresionLZW(string _Path)
+        {
+            int Iteracion;
+            string salida = "";  //cambiar por escritura del archivo
+            string W = "", K = "";
+            var DiccionarioGeneral = ObetnerDiccionarioInicial();//poner como parametro el path global de data
+            var DiccionarioWK = ObetnerDiccionarioInicial();
+            var residuoEscritura = string.Empty;
+            var diccionarioescrito = true;
+            CompresionLZW();
 
-        #region Huffman
-      
-            Nodo ArbolHuffman = new Nodo();
-
-            const int bufferLenght = 500;
-            Dictionary<byte, double> DiccionarioOriginal = new Dictionary<byte, double>();
-            Dictionary<byte, string> dicRecorridos = new Dictionary<byte, string>();
-            public Dictionary<byte, double> dicOr = new Dictionary<byte, double>();
-            Dictionary<string, byte> dicRecorridosDesc = new Dictionary<string, byte>();
-            string Remanente = "";
-
-            public void Huffman(string ruta, string rutaCreacion)
+            void CompresionLZW()
             {
+                var file = new FileStream(_Path, FileMode.Open); // cambiar a dinamico
+                var lectura = new StreamReader(file);
+                string Buffer = "";//buffer
+                Iteracion--;
 
-                Leer(ruta);
-                var TotalDeCaracteres = totalDeCaracteres();
-                var CreacionDeNodosYProbabilidad = AgregarNodos(TotalDeCaracteres);
-                var Arbol = ArmarArbol(CreacionDeNodosYProbabilidad);
-                ArmarDiccionarioDeRecorrido(Arbol[0], "");
-                CreacionDeArchivo(TotalDeCaracteres, rutaCreacion);
-                LeerArchivoParaComprimir(ruta, rutaCreacion);
-                clear();
-
-            }
-            public string HuffmanDescompresion(string ruta)
-            {
-                lecturaDescomprimir(ruta);
-                var totalDeCaractres = totalDeCaracteres();
-                var CreacionDeNodosYProbabilidad = AgregarNodos(totalDeCaractres);
-                var Arbol = ArmarArbol(CreacionDeNodosYProbabilidad);
-                ArmarRecorridoInverso(Arbol[0], "");
-              return  LeerParaDescomprimir(ruta);
-
-            }
-
-            private void Leer(string Ruta)
-            {
-
-
-
-
-                var buffer = new byte[bufferLenght];
-                using (var file = new FileStream(Ruta, FileMode.Open))
+                Buffer = lectura.ReadToEnd();
+                foreach (var Caracter in Buffer)
                 {
-                    using (var reader = new BinaryReader(file))
+                    var WK = "";
+                    if (W == "")
                     {
-                        while (reader.BaseStream.Position != reader.BaseStream.Length)
-                        {
-                            buffer = reader.ReadBytes(bufferLenght);
-                            foreach (var item in buffer)
-                            {
-                                ArmarDiccionarios(item);
-                            }
-
-
-                        }
+                        WK = (Caracter).ToString();
+                        Validacion_Diccionario(WK);
+                    }
+                    else
+                    {
+                        K = ((char)Caracter).ToString();
+                        WK = W + K;
+                        Validacion_Diccionario(WK);
                     }
                 }
 
+                Agregar_A_Salida(DiccionarioGeneral[W], false);
+                EscribirCompress();
+                file.Close();
             }
-            private void ArmarDiccionarios(byte item)
-            {
 
-                if (DiccionarioOriginal.ContainsKey(item))
+            void Validacion_Diccionario(string WK)
+            {
+                if (diccionarioescrito)
                 {
-                    DiccionarioOriginal[item] += 1;
+                    EscribirDiccionario();
+                }
+                if (DiccionarioGeneral.ContainsKey(WK))
+                {
+                    W = WK;
                 }
                 else
                 {
-                    DiccionarioOriginal.Add(item, 1);
-                }
+                    Iteracion++;
+                    DiccionarioGeneral.Add(WK, Iteracion); //generamos codigo
 
-            }
-            private double totalDeCaracteres()
-            {
-                double aux = 0;
-                foreach (var item in DiccionarioOriginal)
-                {
-                    aux += item.Value;
-                }
-                return aux;
-            }
-            private List<Nodo> AgregarNodos(double TotalDeCaracteres)
-            {
+                    Agregar_A_Salida(DiccionarioGeneral[W], true);
 
-                List<Nodo> lista = new List<Nodo>();
-                Dictionary<byte, double> auxiliarParaPorcentaje = new Dictionary<byte, double>();
-                DiccionarioOriginal = DiccionarioOriginal.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+                    W = K;
 
-                //Nodo padre = new Nodo();
-                foreach (var item in DiccionarioOriginal)
-                {
-                    dicOr.Add(item.Key, item.Value);
-                    auxiliarParaPorcentaje.Add(item.Key, item.Value / TotalDeCaracteres);
-                    Nodo nodo = new Nodo();
-                    nodo.Caracter = item.Key;
-                    nodo.Probabilidad = (item.Value / TotalDeCaracteres);
-                    lista.Add(nodo);
                 }
-                DiccionarioOriginal.Clear();
-                DiccionarioOriginal = auxiliarParaPorcentaje;
-                return lista;
             }
 
-            private List<Nodo> ArmarArbol(List<Nodo> lista)
+            void Agregar_A_Salida(int id, bool caso)
             {
-                Nodo tmp;
-                while (lista.Count > 1)
-                {
+                var carsito = (char)id;
+                salida += carsito;
+            }
 
-                    tmp = new Nodo
+            void EscribirDiccionario()
+            {
+                var path = Path.GetDirectoryName(_Path);
+                var name = Path.GetFileNameWithoutExtension(_Path);
+                var File = new FileStream($"{path}\\{name}.lzw", FileMode.Append);
+                var writer = new StreamWriter(File);
+                if (diccionarioescrito)
+                {
+                    foreach (var item in DiccionarioWK)
                     {
-                        NodoIzq = lista[0],
-                        NodoDer = lista[1]
-                    };
-                    tmp.Probabilidad = tmp.NodoIzq.Probabilidad + tmp.NodoDer.Probabilidad;
-                    lista.RemoveRange(0, 2);
-                    lista.Add(tmp);
-                    tmp = null;
-                    lista = lista.OrderBy(p => p.Probabilidad).ToList();
+                        writer.Write($"{item.Key}|{item.Value}♀");
+                    }
+                    writer.Write("END");
+                    diccionarioescrito = false;
                 }
-                return lista;
+                writer.Close();
             }
-
-
-
-            private void ArmarDiccionarioDeRecorrido(Nodo temp, string recorrido)
+            void EscribirCompress()
             {
-                if (temp.NodoDer == null && temp.NodoIzq == null)
+                var path = Path.GetDirectoryName(_Path);
+                var name = Path.GetFileNameWithoutExtension(_Path);
+                var File = new FileStream($"{path}\\{name}.lzw", FileMode.Append);
+                var writer = new StreamWriter(File);
+                foreach (var item in salida)
                 {
-                    dicRecorridos.Add(temp.Caracter, recorrido);
+                    writer.Write(item);
+                }
+                writer.Close();
+                File.Close();
+            }
+            Dictionary<string, int> ObetnerDiccionarioInicial()
+            {
+                var File = new FileStream(_Path, FileMode.Open); // cambiar a dinamico
+                var Lector = new StreamReader(File);
+                var byteBuffer = string.Empty;//buffer
+                var Diccionario = new Dictionary<string, int>();
+                Iteracion = 0;
+                while (Lector.BaseStream.Position != Lector.BaseStream.Length)
+                {
+                    byteBuffer = Lector.ReadToEnd();
+                    foreach (var Caracter in byteBuffer) //Crear diccionario de letras
+                    {
+                        if (!Diccionario.ContainsKey(Convert.ToString(Caracter)))
+                        {
+                            Diccionario.Add(Convert.ToString(Caracter), Iteracion);
+                            Iteracion++;
+                        }
+                    }
+                }
+                File.Close();
+                return Diccionario;
+            }
+        }
+        public void DescompresionLZW(string path)
+        {
+            var DiccionarioDescompresion = new Dictionary<int, string>();
+            var Iteracion = 0;
+            var compreso = new FileStream(path, FileMode.Open);
+            var lector = new StreamReader(compreso);
+            var linea = string.Empty;
+            linea += (char)lector.Read();
+            int CodigoViejo = 0, CodigoNuevo = 0;
+            string Cadena = string.Empty, Caracter = string.Empty;
+            var Texto_Descompreso = string.Empty;
+
+            while (!linea.Contains("END"))
+            {
+
+                linea += (char)lector.Read();
+            }
+            var caractrer = linea.Split('♀');
+            foreach (var item in caractrer)
+            {
+                if (item == "END")
+                {
+                    break;
+                }
+                var temp = item.Split('|');
+                if (temp.Length == 3)
+                {
+                    // tiene | incluido
+                    DiccionarioDescompresion.Add(int.Parse(temp[2]), "|");
                 }
                 else
                 {
-                    if (temp.NodoDer != null)
-                    {
-                        ArmarDiccionarioDeRecorrido(temp.NodoDer, recorrido + 1);
-
-                    }
-                    if (temp.NodoIzq != null)
-                    {
-                        ArmarDiccionarioDeRecorrido(temp.NodoIzq, recorrido + 0);
-                    }
+                    DiccionarioDescompresion.Add(int.Parse(temp[1]), temp[0]);
 
                 }
+
             }
-            private void ArmarRecorridoInverso(Nodo temp, string recorrido)
+            Iteracion = DiccionarioDescompresion.Count();
+            CodigoViejo = lector.Read();
+            Caracter = DiccionarioDescompresion[CodigoViejo];
+            Texto_Descompreso += Caracter;
+
+            //MIENTRAS (!EOF)
+            while (true)
             {
-                if (temp.NodoDer == null && temp.NodoIzq == null)
+                //...LEER cód_nuevo
+                CodigoNuevo = lector.Read();
+                if (CodigoNuevo == -1)
                 {
-                    dicRecorridosDesc.Add(recorrido, temp.Caracter);
+                    break;
                 }
+                if (!DiccionarioDescompresion.ContainsKey(CodigoNuevo))
+                {
+                    Cadena = DiccionarioDescompresion[CodigoViejo] + DiccionarioDescompresion[CodigoViejo][0];
+                    DiccionarioDescompresion.Add(Iteracion, Cadena);
+                    Iteracion++;
+                    Texto_Descompreso += CodigoNuevo;
+                    CodigoViejo = CodigoNuevo;
+                }
+                //...SINO
                 else
                 {
-                    if (temp.NodoDer != null)
-                    {
-                        ArmarRecorridoInverso(temp.NodoDer, recorrido + 1);
-
-                    }
-                    if (temp.NodoIzq != null)
-                    {
-                        ArmarRecorridoInverso(temp.NodoIzq, recorrido + 0);
-                    }
-
+                    Cadena = DiccionarioDescompresion[CodigoNuevo];
+                    Texto_Descompreso += Cadena;
+                    Caracter = Cadena[0].ToString();
+                    DiccionarioDescompresion.Add(Iteracion, $"{DiccionarioDescompresion[CodigoViejo]}{Caracter}");
+                    Iteracion++;
+                    CodigoViejo = CodigoNuevo;
                 }
             }
 
-            private void clear()
+
+            //Escritura en archivo
+            var directory = Path.GetDirectoryName(path);
+            var name = Path.GetFileNameWithoutExtension(path);
+            var Decompress = new FileStream($"{directory}\\Dec_{name}.txt", FileMode.Create);
+            var writer = new StreamWriter(Decompress);
+            foreach (var item in Texto_Descompreso)
             {
-                dicRecorridos.Clear();
-                DiccionarioOriginal.Clear();
-                Remanente = "";
-                dicOr.Clear();
+                writer.Write(item.ToString());
             }
-
-
-
-
-
-
-            private void LeerArchivoParaComprimir(string Ruta, string rutacCreacion)
-            {
-
-                string AuxCadenaParaEscribir = "";
-                var buffer = new byte[bufferLenght];
-                List<string> retorno = new List<string>();
-                string cadena;
-                string BuscarCadenaExacta = "";
-
-                int BuscarModularExacto = 0;
-
-
-                using (var file = new FileStream(Ruta, FileMode.Open))
-                {
-                    using (var reader = new BinaryReader(file))
-                    {
-                        while (reader.BaseStream.Position != reader.BaseStream.Length)
-                        {
-                            buffer = reader.ReadBytes(bufferLenght);
-
-                            AuxCadenaParaEscribir = "";
-                            foreach (var item in buffer)
-                            {
-
-                                AuxCadenaParaEscribir += dicRecorridos[item];
-
-                            }
-
-
-                            cadena = Remanente + AuxCadenaParaEscribir;
-                            if (cadena.Length % 8 == 0)
-                            {
-                                Remanente = "";
-                                CreacionDeArchivoComprimido(cadena, rutacCreacion);
-
-
-                            }
-                            else
-                            {
-                                Remanente = "";
-                                BuscarModularExacto = cadena.Length;
-                                int x;
-                                while (BuscarModularExacto % 8 != 0)
-                                {
-                                    BuscarModularExacto -= 1;
-                                }
-                                BuscarCadenaExacta = cadena.Substring(0, BuscarModularExacto);
-                                Remanente = cadena.Substring(BuscarModularExacto, cadena.Length - BuscarModularExacto);
-                                CreacionDeArchivoComprimido(BuscarCadenaExacta, rutacCreacion);
-
-
-
-
-                            }
-
-
-
-
-                        }
-
-
-                    }
-                }
-
-            }
-
-
-            private void CreacionDeArchivo(double CantidadDeCaracteres, string Ruta)
-            {
-
-                using (var file = new FileStream(Ruta, FileMode.OpenOrCreate))
-                {
-                    using (var texto = new StreamWriter(file))
-                    {
-
-                        foreach (var item in dicOr)
-                        {
-                            texto.Write(item.Key + "|" + item.Value + "|");
-                        }
-                        texto.Write("£");
-                    }
-                }
-            }
-
-            private void CreacionDeArchivoComprimido(string CadenaAComprimir, string Ruta)
-            {
-                string x;
-
-                using (var file = new FileStream(Ruta, FileMode.Append))
-                {
-
-                    using (var writer = new BinaryWriter(file))
-                    {
-
-                        for (int i = 0; i < CadenaAComprimir.Length; i += 8)
-                        {
-                            x = CadenaAComprimir.Substring(i, 8);
-                            writer.Write(Convert.ToByte(CadenaAComprimir.Substring(i, 8), 2));
-
-
-                        }
-
-
-                    }
-                }
-            }
-            private void lecturaDescomprimir(string Ruta)
-            {
-                var buffer = new byte[bufferLenght];
-                string cadena = "";
-                string auxiliar = "";
-                bool bandera = false;
-                string[] cadenaSplit;
-                using (var file = new FileStream(Ruta, FileMode.Open))
-                {
-                    using (var reader = new BinaryReader(file))
-                    {
-                        while (reader.BaseStream.Position != reader.BaseStream.Length)
-                        {
-                            buffer = reader.ReadBytes(bufferLenght);
-                            foreach (var item in buffer)
-                            {
-                                cadena += Convert.ToString(Convert.ToChar(item));
-                            }
-                            auxiliar += cadena;
-                            if (cadena.Contains("£") == true || bandera == false)
-                            {
-
-                                bandera = false;
-                                if (cadena.Contains("£"))
-                                {
-                                    cadenaSplit = auxiliar.Split('£');
-                                    string[] diccionario;
-                                    diccionario = cadenaSplit[0].Split('|');
-                                    for (int i = 0; i <= diccionario.Length - 2; i += 2)
-                                    {
-                                        DiccionarioOriginal.Add(Convert.ToByte(diccionario[i]), Convert.ToDouble(diccionario[i + 1]));
-                                    }
-
-
-                                    auxiliar = "";
-                                }
-
-                            }
-                        }
-                    }
-                }
-            }
-            private string LeerParaDescomprimir(string Ruta)
-            {//163
-             //194
-            var salida = "";
-                var buffer = new byte[bufferLenght];
-                string cadena = "";
-                string conversor = "";
-                bool Inicio = false;
-                bool bandera = false;
-                List<byte> palabra = new List<byte>();
-                string aux = "";
-                string[] cadenaSplit;
-            using (var file = new FileStream(Ruta, FileMode.Open))
-            {
-                using (var reader = new BinaryReader(file))
-                {
-                    while (reader.BaseStream.Position != reader.BaseStream.Length)
-                    {
-                        buffer = reader.ReadBytes(bufferLenght);
-                        foreach (var item in buffer)
-                        {
-                            cadena += Convert.ToString(Convert.ToChar(item));
-                        }
-
-                        if (cadena.Contains("£") == true || bandera == false)
-                        {
-
-                            bandera = false;
-                            if (cadena.Contains("£"))
-                            {
-
-                                Inicio = true;
-                                cadenaSplit = cadena.Split('£');
-                                cadena = cadenaSplit[1];
-
-
-                            }
-
-
-                        }
-                        if (Inicio == true)
-                        {
-                            cadena = Remanente + cadena;
-                            Remanente = "";
-                            string binario = "";
-
-
-                            foreach (var item in cadena)
-                            {
-
-                                conversor = Convert.ToString(Convert.ToByte(item), 2);
-                                if (conversor.Length != 8)
-                                {
-                                    conversor = conversor.PadLeft(8, '0');
-                                }
-                                binario += conversor;
-                            }
-                            foreach (var item in binario)
-                            {
-                                aux += item;
-                                if (dicRecorridosDesc.ContainsKey(aux))
-                                {
-                                    palabra.Add(dicRecorridosDesc[aux]);
-                                    aux = "";
-                                }
-
-
-                            }
-                            Remanente = aux;
-                            salida += palabra;                          
-                            palabra.Clear();
-
-                        }
-                    }
-                }
-                return salida;
-            }
-                
-            }
-            private void EscrituraDescomprimir(string Ruta, List<byte> cadena)
-            {
-                using (var file = new FileStream(Ruta, FileMode.Append))
-                {
-
-                    using (var writer = new StreamWriter(file))
-                    {
-
-                        foreach (var item in cadena)
-                        {
-                            writer.Write(Convert.ToString(Convert.ToChar(item)));
-                        }
-
-                    }
-                }
-            }
-            private void RetornarCaracter(string item, ref string palabra)
-            {
-                if (dicRecorridosDesc.ContainsKey(item))
-                {
-
-                }
-
-            }
-
-
-        
-
-        #endregion
-
+        }
     }
 }
