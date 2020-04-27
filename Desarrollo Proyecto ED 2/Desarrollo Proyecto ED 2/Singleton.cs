@@ -36,11 +36,7 @@ namespace Desarrollo_Proyecto_ED_2
             if (!Sucursales.ContainsKey($"{Sucursal.Id}"))
             {
                 Sucursales.Add($"{Sucursal.Id}", Sucursal);
-                var file = new FileStream("D:\\Pry_ED2\\Sucursales.txt",FileMode.Create);
-                var writer = new StreamWriter(file);
-                writer.Write(JsonConvert.SerializeObject(Sucursales));
-                writer.Close();
-                file.Close();
+                UpdateSucursales();
             }
             else
             {
@@ -54,11 +50,7 @@ namespace Desarrollo_Proyecto_ED_2
             if (!Productos.ContainsKey($"{ProductoNuevo.Id}"))
             {
                 Productos.Add($"{ProductoNuevo.Id}", ProductoNuevo);
-                var file = new FileStream("D:\\Pry_ED2\\Productos.txt", FileMode.Create);
-                var writer = new StreamWriter(file);
-                writer.Write(JsonConvert.SerializeObject(Productos));
-                writer.Close();
-                file.Close();
+                UpdateProductos();
             }
             else
             {
@@ -66,6 +58,7 @@ namespace Desarrollo_Proyecto_ED_2
             }
 
         }
+        
         public void AgregarProductoEnSucursal(int idSucursal, Producto Producto)
         {
             CargarProductos();
@@ -96,19 +89,12 @@ namespace Desarrollo_Proyecto_ED_2
 
                 }
                 //comprimir y cifrar
-                var file = new FileStream("D:\\Pry_ED2\\Relacion.txt",FileMode.Create);
-                    var writer = new StreamWriter(file);
-                    writer.Write(JsonConvert.SerializeObject(Relacion));
-                    writer.Close();
-                    file.Close();
-                 
+                UpdateRelacion();
             }
             else
             {
                 // no exisiste el producto
             }
-
-
 
         }
 
@@ -192,7 +178,7 @@ namespace Desarrollo_Proyecto_ED_2
             //var descompreso =HuffmanDescompresion("D:\\Pry_ED2\\Sucursales.txt");
             //Descifrar
             //var descifrado = SDESDecifrado("1011011001", "1101101101","ruta");
-            Productos = JsonConvert.DeserializeObject<Dictionary<string, Producto>>(json);
+            Productos = JsonConvert.DeserializeObject<Dictionary<string, Producto>>(DescompresionLZW(json));
 
         }
         public void CargarSucursales()
@@ -204,7 +190,7 @@ namespace Desarrollo_Proyecto_ED_2
             //var descompreso =HuffmanDescompresion("D:\\Pry_ED2\\Sucursales.txt");
             //Descifrar
             //var descifrado = SDESDecifrado("1011011001", "1101101101","ruta");
-            Sucursales = JsonConvert.DeserializeObject<Dictionary<string, Sucursal>>(json);
+            Sucursales = JsonConvert.DeserializeObject<Dictionary<string, Sucursal>>(DescompresionLZW(json));
         }
         public void CargarRelacion()
         {
@@ -215,9 +201,35 @@ namespace Desarrollo_Proyecto_ED_2
             //var descompreso =HuffmanDescompresion("D:\\Pry_ED2\\Sucursales.txt");
             //Descifrar
             //var descifrado = SDESDecifrado("1011011001", "1101101101","ruta");
-            Relacion = JsonConvert.DeserializeObject<Dictionary<string, Relacion>>(json);
+            Relacion = JsonConvert.DeserializeObject<Dictionary<string, Relacion>>(DescompresionLZW(json));
 
         }
+        void UpdateProductos()
+        {
+            var file = new FileStream("D:\\Pry_ED2\\Productos.txt", FileMode.Create);
+            var writer = new StreamWriter(file);
+            var lol = CompresionLZW(JsonConvert.SerializeObject(Productos));
+            writer.Write(lol); writer.Close();
+            file.Close();
+        }
+        void UpdateRelacion()
+        {
+            var file = new FileStream("D:\\Pry_ED2\\Relacion.txt", FileMode.Create);
+            var writer = new StreamWriter(file);
+            var lol = CompresionLZW(JsonConvert.SerializeObject(Relacion));
+            writer.Write(lol); writer.Close();
+            file.Close();
+        }
+        void UpdateSucursales()
+        {
+            var file = new FileStream("D:\\Pry_ED2\\Sucursales.txt", FileMode.Create);
+            var writer = new StreamWriter(file);
+            var lol = CompresionLZW(JsonConvert.SerializeObject(Sucursales));
+            writer.Write(lol);
+            writer.Close();
+            file.Close();
+        }
+
         #endregion
 
 
@@ -509,7 +521,7 @@ namespace Desarrollo_Proyecto_ED_2
             return permmuted;
         }
         #endregion
-        public void CompresionLZW(string _Path)
+        public string CompresionLZW(string json)
         {
             int Iteracion;
             string salida = "";  //cambiar por escritura del archivo
@@ -522,13 +534,8 @@ namespace Desarrollo_Proyecto_ED_2
 
             void CompresionLZW()
             {
-                var file = new FileStream(_Path, FileMode.Open); // cambiar a dinamico
-                var lectura = new StreamReader(file);
-                string Buffer = "";//buffer
                 Iteracion--;
-
-                Buffer = lectura.ReadToEnd();
-                foreach (var Caracter in Buffer)
+                foreach (var Caracter in json)
                 {
                     var WK = "";
                     if (W == "")
@@ -543,10 +550,7 @@ namespace Desarrollo_Proyecto_ED_2
                         Validacion_Diccionario(WK);
                     }
                 }
-
                 Agregar_A_Salida(DiccionarioGeneral[W], false);
-                EscribirCompress();
-                file.Close();
             }
 
             void Validacion_Diccionario(string WK)
@@ -579,45 +583,22 @@ namespace Desarrollo_Proyecto_ED_2
 
             void EscribirDiccionario()
             {
-                var path = Path.GetDirectoryName(_Path);
-                var name = Path.GetFileNameWithoutExtension(_Path);
-                var File = new FileStream($"{path}\\{name}.lzw", FileMode.Append);
-                var writer = new StreamWriter(File);
                 if (diccionarioescrito)
                 {
                     foreach (var item in DiccionarioWK)
                     {
-                        writer.Write($"{item.Key}|{item.Value}♀");
+                        salida+=($"{item.Key}|{item.Value}♀");
                     }
-                    writer.Write("END");
+                    salida += ("END");
                     diccionarioescrito = false;
                 }
-                writer.Close();
             }
-            void EscribirCompress()
-            {
-                var path = Path.GetDirectoryName(_Path);
-                var name = Path.GetFileNameWithoutExtension(_Path);
-                var File = new FileStream($"{path}\\{name}.lzw", FileMode.Append);
-                var writer = new StreamWriter(File);
-                foreach (var item in salida)
-                {
-                    writer.Write(item);
-                }
-                writer.Close();
-                File.Close();
-            }
+            
             Dictionary<string, int> ObetnerDiccionarioInicial()
             {
-                var File = new FileStream(_Path, FileMode.Open); // cambiar a dinamico
-                var Lector = new StreamReader(File);
-                var byteBuffer = string.Empty;//buffer
                 var Diccionario = new Dictionary<string, int>();
                 Iteracion = 0;
-                while (Lector.BaseStream.Position != Lector.BaseStream.Length)
-                {
-                    byteBuffer = Lector.ReadToEnd();
-                    foreach (var Caracter in byteBuffer) //Crear diccionario de letras
+                    foreach (var Caracter in json) //Crear diccionario de letras
                     {
                         if (!Diccionario.ContainsKey(Convert.ToString(Caracter)))
                         {
@@ -625,16 +606,21 @@ namespace Desarrollo_Proyecto_ED_2
                             Iteracion++;
                         }
                     }
-                }
-                File.Close();
                 return Diccionario;
             }
+            return salida;
         }
-        public void DescompresionLZW(string path)
+        public string DescompresionLZW(string json)
         {
+            var fileTemp = new FileStream("D:\\Pry_ED2\\temp.txt",FileMode.Create);
+            var writer = new StreamWriter(fileTemp);
+            writer.Write(json);
+            writer.Close();
+            fileTemp.Close();
+
             var DiccionarioDescompresion = new Dictionary<int, string>();
             var Iteracion = 0;
-            var compreso = new FileStream(path, FileMode.Open);
+            var compreso = new FileStream("D:\\Pry_ED2\\temp.txt", FileMode.Open);
             var lector = new StreamReader(compreso);
             var linea = string.Empty;
             linea += (char)lector.Read();
@@ -700,16 +686,16 @@ namespace Desarrollo_Proyecto_ED_2
                     CodigoViejo = CodigoNuevo;
                 }
             }
-
-
+            File.Delete("D:\\Pry_ED2\\temp.txt");
+            return Texto_Descompreso;
             //Escritura en archivo
-            var directory = Path.GetDirectoryName(path);
-            var name = Path.GetFileNameWithoutExtension(path);
+            var directory = Path.GetDirectoryName("D:\\Pry_ED2\\temp.txt");
+            var name = Path.GetFileNameWithoutExtension("D:\\Pry_ED2\\temp.txt");
             var Decompress = new FileStream($"{directory}\\Dec_{name}.txt", FileMode.Create);
-            var writer = new StreamWriter(Decompress);
+            var writexr = new StreamWriter(Decompress);
             foreach (var item in Texto_Descompreso)
             {
-                writer.Write(item.ToString());
+                writexr.Write(item.ToString());
             }
         }
     }

@@ -57,8 +57,9 @@ namespace Desarrollo_Proyecto_ED_2
             //api net core
             // Interfaz grafica
 
-            // Manejo De INventario:
+
             
+            // Manejo De INventario:
             //Actualizar Datos
             //Agregar varios productos por medio de CSV
             //Actualizar Datos
