@@ -687,16 +687,6 @@ namespace Desarrollo_Proyecto_ED_2
                 }
             }
             File.Delete("D:\\Pry_ED2\\temp.txt");
-            return Texto_Descompreso;
-            //Escritura en archivo
-            var directory = Path.GetDirectoryName("D:\\Pry_ED2\\temp.txt");
-            var name = Path.GetFileNameWithoutExtension("D:\\Pry_ED2\\temp.txt");
-            var Decompress = new FileStream($"{directory}\\Dec_{name}.txt", FileMode.Create);
-            var writexr = new StreamWriter(Decompress);
-            foreach (var item in Texto_Descompreso)
-            {
-                writexr.Write(item.ToString());
-            }
         }
     }
 }
