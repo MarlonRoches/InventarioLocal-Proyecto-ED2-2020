@@ -77,10 +77,12 @@ namespace Desarrollo_Proyecto_ED_2
                             Stock = 1
                         };
                         Relacion.Add($"{idSucursal}^{Producto.Id}", NuevaRelacion);
+                        //agrega sucursal
                     }
                     else
                     {
                         Relacion[$"{idSucursal}^{Producto.Id}"].Stock++;
+                        //aumenta el stock
                     }
                 }
                 else
@@ -93,7 +95,6 @@ namespace Desarrollo_Proyecto_ED_2
             }
             else
             {
-                // no exisiste el producto
             }
 
         }
@@ -171,7 +172,7 @@ namespace Desarrollo_Proyecto_ED_2
         void UpdateProductos()
         {
             var file = new FileStream("Productos.txt", FileMode.Create);
-            var lol = CompresionLZW(SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Productos)));
+            var lol = SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Productos));
             var writer = new StreamWriter(file);
             writer.Write(lol); 
             writer.Close();
@@ -181,7 +182,7 @@ namespace Desarrollo_Proyecto_ED_2
         {
             var file = new FileStream("Relacion.txt", FileMode.Create);
             var writer = new StreamWriter(file);
-            var lol = CompresionLZW(SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Relacion)));
+            var lol = SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Relacion));
             writer.Write(lol); writer.Close();
             file.Close();
         }
@@ -189,7 +190,7 @@ namespace Desarrollo_Proyecto_ED_2
         {
             var file = new FileStream("Sucursales.txt", FileMode.Create);
             var writer = new StreamWriter(file);
-            var lol = CompresionLZW(SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Sucursales)));
+            var lol =SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Sucursales));
             writer.Write(lol);
             writer.Close();
             file.Close();
