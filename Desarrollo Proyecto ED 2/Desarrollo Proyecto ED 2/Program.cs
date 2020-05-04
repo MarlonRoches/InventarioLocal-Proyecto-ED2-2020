@@ -48,27 +48,34 @@ namespace Desarrollo_Proyecto_ED_2
 
             Console.ReadKey();
             //match exacto Listo
-            
+
             //id unico Listo
 
             //cambiar bin
 
             //datos transportables Pendiente
+
             //Arbol Compreso
-            // documentacion
-            //api net core
-            // Interfaz grafica
+
+            //documentacion
+
+            //api net core Marlon
+
+            // Interfaz grafica Marlon
 
 
-            
+
+
+
+
             // Manejo De INventario:
-            //Actualizar Datos
-            //Agregar varios productos por medio de CSV
-            //Actualizar Datos
-            //Transferir Por sucursales
-            //Actualizar Inventario De Sucursal
+            //Actualizar Datos Alejandra
+            //Agregar varios productos por medio de CSV Alejandra
+            //Actualizar Datos Alejandra
+            //Transferir Por sucursales Alejandra
+            //Actualizar Inventario De Sucursal Alejandra
 
-            //Listados:
+            //Listados: Alejandra
             //Sucursal
             //Producto
             //sucursal- Producto

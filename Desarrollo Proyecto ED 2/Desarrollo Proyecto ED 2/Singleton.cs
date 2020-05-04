@@ -105,38 +105,42 @@ namespace Desarrollo_Proyecto_ED_2
             
                 if (!File.Exists("Productos.txt"))
                 {
-                    var File = new FileStream("Productos.txt", FileMode.Create);
-                    var wrtr = new StreamWriter(File);
-
                     ////cifrar
-                    //var cifrado = SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Productos));
 
+                    var cifrado = SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Productos));
+                    var File = new FileStream("Productos.txt", FileMode.Create);
+
+                    var wrtr = new StreamWriter(File);
                     ////comprimir
                     // Huffman(cifrado);
-                    wrtr.WriteLine(JsonConvert.SerializeObject(Productos));
+                    wrtr.WriteLine(cifrado);
                     wrtr.Close();
                     File.Close();
                 }
                 if (!File.Exists("Sucursales.txt"))
                 {
-                    var File = new FileStream("Sucursales.txt", FileMode.Create);
-                    var wrtr = new StreamWriter(File);
-                    // cifrado = SDESCifrado("1011011001", "1101101101" ,JsonConvert.SerializeObject(Sucursales));
-                    // cifrado = SDESCifrado("1011011001", "1101101101" ,JsonConvert.SerializeObject(Sucursales));
-                    wrtr.WriteLine(JsonConvert.SerializeObject(Sucursales));
+                var cifrado = SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Sucursales));
+                var File = new FileStream("Sucursales.txt", FileMode.Create);
 
-                    wrtr.Close();
-                    File.Close();
-                }
+                var wrtr = new StreamWriter(File);
+                ////comprimir
+                // Huffman(cifrado);
+                wrtr.WriteLine(cifrado);
+                wrtr.Close();
+                File.Close();
+            }
                 if (!File.Exists("Relacion.txt"))
                 {
-                    var File = new FileStream("Relacion.txt", FileMode.Create);
-                    // cifrado = SDESCifrado("1001101010", "0110010101", JsonConvert.SerializeObject(Relacion));
-                    var wrtr = new StreamWriter(File);
-                    wrtr.WriteLine(JsonConvert.SerializeObject(Relacion));
-                    wrtr.Close();
-                    File.Close();
-                }
+                var cifrado = SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Relacion));
+                var File = new FileStream("Relacion.txt", FileMode.Create);
+
+                var wrtr = new StreamWriter(File);
+                ////comprimir
+                // Huffman(cifrado);
+                wrtr.WriteLine(cifrado);
+                wrtr.Close();
+                File.Close();
+            }
             
         }
         public void CargarProductos()
@@ -144,11 +148,8 @@ namespace Desarrollo_Proyecto_ED_2
             var Raw = new StreamReader("Productos.txt");
             var json = Raw.ReadToEnd();
             Raw.Close();
-            //descomprimir 
-            //var descompreso =HuffmanDescompresion("D:\\Pry_ED2\\Sucursales.txt");
-            //Descifrar
-            //var descifrado = SDESDecifrado("1011011001", "1101101101","ruta");
-            Productos = JsonConvert.DeserializeObject<Dictionary<string, Producto>>(DescompresionLZW(json));
+            Sucursales = JsonConvert.DeserializeObject<Dictionary<string, Sucursal>>(SDESDecifrado("1010101100", "1100110111", json.Trim()));
+
 
         }
         public void CargarSucursales()
@@ -156,37 +157,31 @@ namespace Desarrollo_Proyecto_ED_2
             var Raw = new StreamReader("Sucursales.txt");
             var json = Raw.ReadToEnd();
             Raw.Close();
-            //descomprimir 
-            //var descompreso =HuffmanDescompresion("D:\\Pry_ED2\\Sucursales.txt");
-            //Descifrar
-            //var descifrado = SDESDecifrado("1011011001", "1101101101","ruta");
-            Sucursales = JsonConvert.DeserializeObject<Dictionary<string, Sucursal>>(DescompresionLZW(json));
+            Sucursales = JsonConvert.DeserializeObject<Dictionary<string, Sucursal>>(SDESDecifrado("1010101100", "1100110111", json.Trim()));
         }
         public void CargarRelacion()
         {
             var Raw = new StreamReader("Relacion.txt");
             var json = Raw.ReadToEnd();
             Raw.Close();
-            //descomprimir 
-            //var descompreso =HuffmanDescompresion("D:\\Pry_ED2\\Sucursales.txt");
-            //Descifrar
-            //var descifrado = SDESDecifrado("1011011001", "1101101101","ruta");
-            Relacion = JsonConvert.DeserializeObject<Dictionary<string, Relacion>>(DescompresionLZW(json));
+            Sucursales = JsonConvert.DeserializeObject<Dictionary<string, Sucursal>>(SDESDecifrado("1010101100", "1100110111", json.Trim()));
+
 
         }
         void UpdateProductos()
         {
             var file = new FileStream("Productos.txt", FileMode.Create);
+            var lol = CompresionLZW(SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Productos)));
             var writer = new StreamWriter(file);
-            var lol = CompresionLZW(JsonConvert.SerializeObject(Productos));
-            writer.Write(lol); writer.Close();
+            writer.Write(lol); 
+            writer.Close();
             file.Close();
         }
         void UpdateRelacion()
         {
             var file = new FileStream("Relacion.txt", FileMode.Create);
             var writer = new StreamWriter(file);
-            var lol = CompresionLZW(JsonConvert.SerializeObject(Relacion));
+            var lol = CompresionLZW(SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Relacion)));
             writer.Write(lol); writer.Close();
             file.Close();
         }
@@ -194,15 +189,13 @@ namespace Desarrollo_Proyecto_ED_2
         {
             var file = new FileStream("Sucursales.txt", FileMode.Create);
             var writer = new StreamWriter(file);
-            var lol = CompresionLZW(JsonConvert.SerializeObject(Sucursales));
+            var lol = CompresionLZW(SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Sucursales)));
             writer.Write(lol);
             writer.Close();
             file.Close();
         }
 
         #endregion
-
-
 
         #region VariablesGlobales
         string original_path = string.Empty;
@@ -261,52 +254,94 @@ namespace Desarrollo_Proyecto_ED_2
             var KEYAR = Generarkeys(originalkey);
             return KEYAR;
         }
-        public void SDESCifrado(string llave1, string llave2)
+        public string SDESCifrado(string llave1, string llave2,string path)
         {
+            S0[0, 0] = "01";
+            S0[0, 1] = "00";
+            S0[0, 2] = "11";
+            S0[0, 3] = "10";
+            S0[1, 0] = "11";
+            S0[1, 1] = "10";
+            S0[1, 2] = "01";
+            S0[1, 3] = "00";
+            S0[2, 0] = "00";
+            S0[2, 1] = "10";
+            S0[2, 2] = "01";
+            S0[2, 3] = "11";
+            S0[3, 0] = "11";
+            S0[3, 1] = "01";
+            S0[3, 2] = "11";
+            S0[3, 3] = "10";
+            S1[0, 0] = "00";
+            S1[0, 1] = "01";
+            S1[0, 2] = "10";
+            S1[0, 3] = "11";
+            S1[1, 0] = "10";
+            S1[1, 1] = "00";
+            S1[1, 2] = "01";
+            S1[1, 3] = "11";
+            S1[2, 0] = "11";
+            S1[2, 1] = "00";
+            S1[2, 2] = "01";
+            S1[2, 3] = "00";
+            S1[3, 0] = "10";
+            S1[3, 1] = "01";
+            S1[3, 2] = "00";
+            S1[3, 3] = "11";
 
-            var Original = new FileStream(GlobalPath, FileMode.Open);
-            var lector = new BinaryReader(Original);
-            var buffer = new byte[100000];
-            var nombrearchivo = $"{Path.GetFileName(Original.Name).Split('.')[0]}_.{"scif"}";
-            var encoded = new FileStream(original_path + "\\" + nombrearchivo, FileMode.OpenOrCreate);
-            var writer = new BinaryWriter(encoded);
-            while (lector.BaseStream.Position != lector.BaseStream.Length)
+            var Salida = "";
+            foreach (var item in path)
             {
-                buffer = lector.ReadBytes(100000);
-                foreach (var item in buffer)
-                {
-                    var caracter = (char)item;
-                    var bin = Convert.ToString(item, 2).PadLeft(8, '0');
-                    var monitor = Convert.ToByte(BinarioADecimal(CifradoSDES(llave1, llave2, bin)));
-                    caracter = (char)monitor;
-                    writer.Write(monitor);
-                }
+                var bin = Convert.ToString(item, 2).PadLeft(8, '0');
+                var monitor = Convert.ToByte(BinarioADecimal(CifradoSDES(llave1, llave2, bin)));
+                Salida += (char)monitor;
             }
-            Original.Close();
-            encoded.Close();
+            return Salida;
         }
         //decifrado
-        public void SDESDecifrado(string llave1, string llave2)
+        public string SDESDecifrado(string llave1, string llave2,string path)
         {
-            var Cifrado = new FileStream(GlobalPath, FileMode.Open);
-            var lector = new BinaryReader(Cifrado);
-            var nombrearchivo = $"{Path.GetFileName(Cifrado.Name).Split('.')[0]}_.{"txt"}";
+            S0[0, 0] = "01";
+            S0[0, 1] = "00";
+            S0[0, 2] = "11";
+            S0[0, 3] = "10";
+            S0[1, 0] = "11";
+            S0[1, 1] = "10";
+            S0[1, 2] = "01";
+            S0[1, 3] = "00";
+            S0[2, 0] = "00";
+            S0[2, 1] = "10";
+            S0[2, 2] = "01";
+            S0[2, 3] = "11";
+            S0[3, 0] = "11";
+            S0[3, 1] = "01";
+            S0[3, 2] = "11";
+            S0[3, 3] = "10";
+            S1[0, 0] = "00";
+            S1[0, 1] = "01";
+            S1[0, 2] = "10";
+            S1[0, 3] = "11";
+            S1[1, 0] = "10";
+            S1[1, 1] = "00";
+            S1[1, 2] = "01";
+            S1[1, 3] = "11";
+            S1[2, 0] = "11";
+            S1[2, 1] = "00";
+            S1[2, 2] = "01";
+            S1[2, 3] = "00";
+            S1[3, 0] = "10";
+            S1[3, 1] = "01";
+            S1[3, 2] = "00";
+            S1[3, 3] = "11";
 
-            var decoded = new FileStream(original_path + "\\" + nombrearchivo, FileMode.OpenOrCreate);
-            var writer = new BinaryWriter(decoded);
-            var buffer = new byte[100000];
-            while (lector.BaseStream.Position != lector.BaseStream.Length)
+            var Salida = "";
+            foreach (var item in path)
             {
-                buffer = lector.ReadBytes(100000);
-                foreach (var item in buffer)
-                {
-                    var bin = Convert.ToString(item, 2).PadLeft(8, '0');
-                    var monitor = Convert.ToByte(BinarioADecimal(CifradoSDES(llave2, llave1, bin)));
-                    writer.Write(monitor);
-                }
+                var bin = Convert.ToString(item, 2).PadLeft(8, '0');
+                var monitor = Convert.ToByte(BinarioADecimal(CifradoSDES(llave2, llave1, bin)));
+                Salida += (char)monitor;
             }
-            decoded.Close();
-            Cifrado.Close();
+            return Salida;
         }
 
         string CifradoSDES(string key1, string key2, string actual)
@@ -319,7 +354,7 @@ namespace Desarrollo_Proyecto_ED_2
             var MitadDerecha = entrada.Remove(0, 4);
 
             //3 expandir derecho
-            var expandido = Expandir(MitadDerecha);
+            var expandido = Expandir(MitadDerecha).PadLeft(10,'0');
 
             //4 xor key1 y lado derecho
             var xorResultado = XOR(key1, expandido);
@@ -347,7 +382,7 @@ namespace Desarrollo_Proyecto_ED_2
             var juntosSwaped = MitadDerecha + paso8;
 
             //paso 11 EP bloque 2 del paso10 
-            var segundoexpandido = Expandir(juntosSwaped.Remove(0, 4));
+            var segundoexpandido = Expandir(juntosSwaped.Remove(0, 4)).PadLeft(10,'0');
             var monico = segundoexpandido.Length;
 
             ////paso12 xor de segundo expandido con key 2
