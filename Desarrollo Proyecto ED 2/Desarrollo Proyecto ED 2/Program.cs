@@ -11,10 +11,12 @@ namespace Desarrollo_Proyecto_ED_2
     {
         static void Main(string[] args)
         {
-            //Datos Guardados, cifrados PENDIENTE
-            
-                //Agregar Sucursal
+            //id unico Listo
+            //Datos Guardados, cifrados Listo - Alejandra
+            //Agregar Sucursal Listo
+            //Crear Tablas - Marlon Listo
             Singleton.Ins.CrearTablas();
+            //Crear sucursal - Marlon Listo
             var sucur = new Sucursal
             {
                 Nombre = "Hola",
@@ -30,8 +32,7 @@ namespace Desarrollo_Proyecto_ED_2
                 Direccion = "Casita"
             };
             Singleton.Ins.AgregarSucursal(sucur2);
-
-            //Agregar Un Producto
+            //Agregar Un Producto - Marlon Listo
             var pPepsi = new Producto()
             {
                 Id= 226,
@@ -39,38 +40,31 @@ namespace Desarrollo_Proyecto_ED_2
                 Precio = 56.3
             };
             Singleton.Ins.AgregarProducto(pPepsi);
-            
+            //Crear relacion - Marlon  Listo
             Singleton.Ins.AgregarProductoEnSucursal(5,pPepsi);
-
-
             Singleton.Ins.AgregarProductoEnSucursal(5,pPepsi);
             Singleton.Ins.AgregarProductoEnSucursal(6,pPepsi);
-
             Console.ReadKey();
-            //match exacto Listo
-
-            //id unico Listo
-
-            //cambiar bin
-
-            //datos transportables Pendiente
-
-            //Arbol Compreso
-
-            //documentacion
-
-            //api net core Marlon
-
-            // Interfaz grafica Marlon
-
-
-
 
 
 
             // Manejo De INventario:
-            //Actualizar Datos Alejandra
+            //Actualizar Producto Alejandra - nombre y precio
+            Singleton.Ins.ModificarProducto(pPepsi.Id,"nombre", 66.26);
+
+
+
+
+            //Actualizar Relacion Alejandra -                     stock
+            Singleton.Ins.ModificarRelacion("idProducto^idsucursal", 5);
+
+            //Actualizar Sucursal Alejandra nomrbre y direccion
+            Singleton.Ins.ModificarSucursal(pPepsi.Id, "Nombre Sucursal","Direccion");
+
             //Agregar varios productos por medio de CSV Alejandra
+
+
+
             //Actualizar Datos Alejandra
             //Transferir Por sucursales Alejandra
             //Actualizar Inventario De Sucursal Alejandra
@@ -80,6 +74,22 @@ namespace Desarrollo_Proyecto_ED_2
             //Producto
             //sucursal- Producto
             //
+
+
+            //match exacto Listo
+            //cambiar a archivos locales de bin/debug Listo
+
+
+            //datos transportables Compresion Pendiente
+
+            //documentacion
+
+            //api net core Marlon
+
+            // Interfaz grafica Marlon
+
+
+
         }
     }
 }

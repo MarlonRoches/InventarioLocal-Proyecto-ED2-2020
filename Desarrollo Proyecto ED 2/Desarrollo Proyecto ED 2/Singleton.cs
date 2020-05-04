@@ -58,15 +58,17 @@ namespace Desarrollo_Proyecto_ED_2
             }
 
         }
-        
         public void AgregarProductoEnSucursal(int idSucursal, Producto Producto)
         {
+            //existe el producto?
             CargarProductos();
             if (Productos.ContainsKey($"{Producto.Id}"))
             {
+            //existe la sucursal?
                 CargarSucursales();
                 if (Sucursales.ContainsKey($"{idSucursal}"))
                 {
+            //existe la relacion?
                     CargarRelacion();
                     if (!Relacion.ContainsKey($"{idSucursal}^{Producto.Id}"))
                     {
@@ -95,11 +97,22 @@ namespace Desarrollo_Proyecto_ED_2
             }
             else
             {
+                // no exisiste el producto
             }
 
         }
+        public void ModificarProducto(int id,string nombrenuevo, double precionuevo)
+        {
 
+        }
+        public void ModificarRelacion(string NombreRelacional, int stockNuevo)
+        {
 
+        }
+        public void ModificarSucursal(int id, string nombrenuevo, string precionuevo)
+        {
+
+        }
         #region Tablas
         public void CrearTablas()
         {
