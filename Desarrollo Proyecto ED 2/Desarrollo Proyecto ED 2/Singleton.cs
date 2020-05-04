@@ -105,7 +105,7 @@ namespace Desarrollo_Proyecto_ED_2
             
                 if (!File.Exists("Productos.txt"))
                 {
-                    var File = new FileStream("D:\\Pry_ED2\\Productos.txt", FileMode.Create);
+                    var File = new FileStream("Productos.txt", FileMode.Create);
                     var wrtr = new StreamWriter(File);
 
                     ////cifrar
@@ -119,7 +119,7 @@ namespace Desarrollo_Proyecto_ED_2
                 }
                 if (!File.Exists("Sucursales.txt"))
                 {
-                    var File = new FileStream("D:\\Pry_ED2\\Sucursales.txt", FileMode.Create);
+                    var File = new FileStream("Sucursales.txt", FileMode.Create);
                     var wrtr = new StreamWriter(File);
                     // cifrado = SDESCifrado("1011011001", "1101101101" ,JsonConvert.SerializeObject(Sucursales));
                     wrtr.WriteLine(JsonConvert.SerializeObject(Sucursales));
@@ -129,7 +129,7 @@ namespace Desarrollo_Proyecto_ED_2
                 }
                 if (!File.Exists("Relacion.txt"))
                 {
-                    var File = new FileStream("D:\\Pry_ED2\\Relacion.txt", FileMode.Create);
+                    var File = new FileStream("Relacion.txt", FileMode.Create);
                     // cifrado = SDESCifrado("1001101010", "0110010101", JsonConvert.SerializeObject(Relacion));
                     var wrtr = new StreamWriter(File);
                     wrtr.WriteLine(JsonConvert.SerializeObject(Relacion));
