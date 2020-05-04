@@ -102,39 +102,8 @@ namespace Desarrollo_Proyecto_ED_2
         #region Tablas
         public void CrearTablas()
         {
-            if (!Directory.Exists("D:\\Pry_ED2"))
-            {
-                DirectoryInfo di = Directory.CreateDirectory("D:\\Pry_ED2");
-                var File = new FileStream("D:\\Pry_ED2\\Productos.txt", FileMode.Create);
-                var wrtr = new StreamWriter(File);
-
-                ////cifrar
-                //var cifrado = SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Productos));
-
-                ////comprimir
-                // Huffman(cifrado);
-                wrtr.WriteLine(JsonConvert.SerializeObject(Productos));
-                wrtr.Close();
-                File.Close();
-
-                File = new FileStream("D:\\Pry_ED2\\Sucursales.txt", FileMode.Create);
-                wrtr = new StreamWriter(File);
-                // cifrado = SDESCifrado("1011011001", "1101101101" ,JsonConvert.SerializeObject(Sucursales));
-                wrtr.WriteLine(JsonConvert.SerializeObject(Sucursales));
-
-                wrtr.Close();
-                File.Close();
-
-                File = new FileStream("D:\\Pry_ED2\\Relacion.txt", FileMode.Create);
-                // cifrado = SDESCifrado("1001101010", "0110010101", JsonConvert.SerializeObject(Relacion));
-                wrtr = new StreamWriter(File);
-                wrtr.WriteLine(JsonConvert.SerializeObject(Relacion));
-                wrtr.Close();
-                File.Close();
-            }
-            else
-            {
-                if (!File.Exists("D:\\Pry_ED2\\Productos.txt"))
+            
+                if (!File.Exists("Productos.txt"))
                 {
                     var File = new FileStream("D:\\Pry_ED2\\Productos.txt", FileMode.Create);
                     var wrtr = new StreamWriter(File);
@@ -148,7 +117,7 @@ namespace Desarrollo_Proyecto_ED_2
                     wrtr.Close();
                     File.Close();
                 }
-                if (!File.Exists("D:\\Pry_ED2\\Sucursales.txt"))
+                if (!File.Exists("Sucursales.txt"))
                 {
                     var File = new FileStream("D:\\Pry_ED2\\Sucursales.txt", FileMode.Create);
                     var wrtr = new StreamWriter(File);
@@ -158,7 +127,7 @@ namespace Desarrollo_Proyecto_ED_2
                     wrtr.Close();
                     File.Close();
                 }
-                if (!File.Exists("D:\\Pry_ED2\\Relacion.txt"))
+                if (!File.Exists("Relacion.txt"))
                 {
                     var File = new FileStream("D:\\Pry_ED2\\Relacion.txt", FileMode.Create);
                     // cifrado = SDESCifrado("1001101010", "0110010101", JsonConvert.SerializeObject(Relacion));
@@ -167,11 +136,11 @@ namespace Desarrollo_Proyecto_ED_2
                     wrtr.Close();
                     File.Close();
                 }
-            }
+            
         }
         public void CargarProductos()
         {
-            var Raw = new StreamReader("D:\\Pry_ED2\\Productos.txt");
+            var Raw = new StreamReader("Productos.txt");
             var json = Raw.ReadToEnd();
             Raw.Close();
             //descomprimir 
@@ -183,7 +152,7 @@ namespace Desarrollo_Proyecto_ED_2
         }
         public void CargarSucursales()
         {
-            var Raw = new StreamReader("D:\\Pry_ED2\\Sucursales.txt");
+            var Raw = new StreamReader("Sucursales.txt");
             var json = Raw.ReadToEnd();
             Raw.Close();
             //descomprimir 
@@ -194,7 +163,7 @@ namespace Desarrollo_Proyecto_ED_2
         }
         public void CargarRelacion()
         {
-            var Raw = new StreamReader("D:\\Pry_ED2\\Relacion.txt");
+            var Raw = new StreamReader("Relacion.txt");
             var json = Raw.ReadToEnd();
             Raw.Close();
             //descomprimir 
@@ -206,7 +175,7 @@ namespace Desarrollo_Proyecto_ED_2
         }
         void UpdateProductos()
         {
-            var file = new FileStream("D:\\Pry_ED2\\Productos.txt", FileMode.Create);
+            var file = new FileStream("Productos.txt", FileMode.Create);
             var writer = new StreamWriter(file);
             var lol = CompresionLZW(JsonConvert.SerializeObject(Productos));
             writer.Write(lol); writer.Close();
@@ -214,7 +183,7 @@ namespace Desarrollo_Proyecto_ED_2
         }
         void UpdateRelacion()
         {
-            var file = new FileStream("D:\\Pry_ED2\\Relacion.txt", FileMode.Create);
+            var file = new FileStream("Relacion.txt", FileMode.Create);
             var writer = new StreamWriter(file);
             var lol = CompresionLZW(JsonConvert.SerializeObject(Relacion));
             writer.Write(lol); writer.Close();
@@ -222,7 +191,7 @@ namespace Desarrollo_Proyecto_ED_2
         }
         void UpdateSucursales()
         {
-            var file = new FileStream("D:\\Pry_ED2\\Sucursales.txt", FileMode.Create);
+            var file = new FileStream("Sucursales.txt", FileMode.Create);
             var writer = new StreamWriter(file);
             var lol = CompresionLZW(JsonConvert.SerializeObject(Sucursales));
             writer.Write(lol);
@@ -612,7 +581,7 @@ namespace Desarrollo_Proyecto_ED_2
         }
         public string DescompresionLZW(string json)
         {
-            var fileTemp = new FileStream("D:\\Pry_ED2\\temp.txt",FileMode.Create);
+            var fileTemp = new FileStream("temp.txt",FileMode.Create);
             var writer = new StreamWriter(fileTemp);
             writer.Write(json);
             writer.Close();
@@ -620,7 +589,7 @@ namespace Desarrollo_Proyecto_ED_2
 
             var DiccionarioDescompresion = new Dictionary<int, string>();
             var Iteracion = 0;
-            var compreso = new FileStream("D:\\Pry_ED2\\temp.txt", FileMode.Open);
+            var compreso = new FileStream("temp.txt", FileMode.Open);
             var lector = new StreamReader(compreso);
             var linea = string.Empty;
             linea += (char)lector.Read();
@@ -687,6 +656,7 @@ namespace Desarrollo_Proyecto_ED_2
                 }
             }
             File.Delete("D:\\Pry_ED2\\temp.txt");
+            return Texto_Descompreso;
         }
     }
 }

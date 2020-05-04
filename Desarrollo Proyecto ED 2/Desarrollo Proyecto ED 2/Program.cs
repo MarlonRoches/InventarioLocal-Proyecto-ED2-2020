@@ -51,6 +51,8 @@ namespace Desarrollo_Proyecto_ED_2
             
             //id unico Listo
 
+            //cambiar bin
+
             //datos transportables Pendiente
             //Arbol Compreso
             // documentacion
