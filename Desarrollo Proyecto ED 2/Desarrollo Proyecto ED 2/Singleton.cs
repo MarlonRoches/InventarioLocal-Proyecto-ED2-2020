@@ -122,6 +122,7 @@ namespace Desarrollo_Proyecto_ED_2
                     var File = new FileStream("Sucursales.txt", FileMode.Create);
                     var wrtr = new StreamWriter(File);
                     // cifrado = SDESCifrado("1011011001", "1101101101" ,JsonConvert.SerializeObject(Sucursales));
+                    // cifrado = SDESCifrado("1011011001", "1101101101" ,JsonConvert.SerializeObject(Sucursales));
                     wrtr.WriteLine(JsonConvert.SerializeObject(Sucursales));
 
                     wrtr.Close();
