@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 namespace Desarrollo_Proyecto_ED_2
 {
-    class Singleton
+    class Data
     {
         class Nodo
         {
@@ -16,12 +16,12 @@ namespace Desarrollo_Proyecto_ED_2
             public double Probabilidad;
             public byte Caracter;
         }
-        private static Singleton _instance = null;
-        public static Singleton Ins
+        private static Data _instance = null;
+        public static Data x
         {
             get
             {
-                if (_instance == null) _instance = new Singleton();
+                if (_instance == null) _instance = new Data();
                 return _instance;
             }
         }
@@ -103,15 +103,17 @@ namespace Desarrollo_Proyecto_ED_2
         }
         public void ModificarProducto(int id,string nombrenuevo, double precionuevo)
         {
-
-        }
-        public void ModificarRelacion(string NombreRelacional, int stockNuevo)
-        {
-
-        }
-        public void ModificarSucursal(int id, string nombrenuevo, string precionuevo)
-        {
-
+            CargarProductos();
+            if (Productos.ContainsKey($"{id}"))
+            {
+                Productos[$"{id}"].Nombre = nombrenuevo;
+                Productos[$"{id}"].Precio= precionuevo;
+                UpdateProductos();
+            }
+            else
+            {
+                //no lo contiene
+            }
         }
         #region Tablas
         public void CrearTablas()
@@ -133,28 +135,29 @@ namespace Desarrollo_Proyecto_ED_2
                 }
                 if (!File.Exists("Sucursales.txt"))
                 {
-                var cifrado = SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Sucursales));
-                var File = new FileStream("Sucursales.txt", FileMode.Create);
+                    var cifrado = SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Sucursales));
+                    var File = new FileStream("Sucursales.txt", FileMode.Create);
 
-                var wrtr = new StreamWriter(File);
-                ////comprimir
-                // Huffman(cifrado);
-                wrtr.WriteLine(cifrado);
-                wrtr.Close();
-                File.Close();
-            }
+                    var wrtr = new StreamWriter(File);
+                    ////comprimir
+                    // Huffman(cifrado);
+                    wrtr.WriteLine(cifrado);
+                    wrtr.Close();
+                    File.Close();
+               
+                }
                 if (!File.Exists("Relacion.txt"))
                 {
                 var cifrado = SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Relacion));
-                var File = new FileStream("Relacion.txt", FileMode.Create);
+                    var File = new FileStream("Relacion.txt", FileMode.Create);
 
-                var wrtr = new StreamWriter(File);
-                ////comprimir
-                // Huffman(cifrado);
-                wrtr.WriteLine(cifrado);
-                wrtr.Close();
-                File.Close();
-            }
+                    var wrtr = new StreamWriter(File);
+                    ////comprimir
+                    // Huffman(cifrado);
+                    wrtr.WriteLine(cifrado);
+                    wrtr.Close();
+                    File.Close();
+                }
             
         }
         public void CargarProductos()

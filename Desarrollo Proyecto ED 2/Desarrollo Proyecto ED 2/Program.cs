@@ -15,23 +15,23 @@ namespace Desarrollo_Proyecto_ED_2
             //Datos Guardados, cifrados Listo - Alejandra
             //Agregar Sucursal Listo
             //Crear Tablas - Marlon Listo
-            Singleton.Ins.CrearTablas();
+            Data.x.CrearTablas();
             //Crear sucursal - Marlon Listo
             var sucur = new Sucursal
             {
-                Nombre = "Hola",
+                Nombre = "EbenEzer",
                 Id = 5,
-                Direccion= "Casita"
+                Direccion= "Zona 5"
             };
-            Singleton.Ins.AgregarSucursal(sucur);
-            Singleton.Ins.AgregarSucursal(sucur);
+            Data.x.AgregarSucursal(sucur);
+            Data.x.AgregarSucursal(sucur);
             var sucur2 = new Sucursal
             {
-                Nombre = "Hola",
-                Id = 6,
-                Direccion = "Casita"
+                Nombre = "Casa De Dios",
+                Id = 9,
+                Direccion = "Fraijanes"
             };
-            Singleton.Ins.AgregarSucursal(sucur2);
+            Data.x.AgregarSucursal(sucur2);
             //Agregar Un Producto - Marlon Listo
             var pPepsi = new Producto()
             {
@@ -39,30 +39,29 @@ namespace Desarrollo_Proyecto_ED_2
                 Nombre= "Pepsi",
                 Precio = 56.3
             };
-            Singleton.Ins.AgregarProducto(pPepsi);
+            Data.x.AgregarProducto(pPepsi);
             //Crear relacion - Marlon  Listo
-            Singleton.Ins.AgregarProductoEnSucursal(5,pPepsi);
-            Singleton.Ins.AgregarProductoEnSucursal(5,pPepsi);
-            Singleton.Ins.AgregarProductoEnSucursal(6,pPepsi);
-            Console.ReadKey();
+            Data.x.AgregarProductoEnSucursal(5,pPepsi);
+            Data.x.AgregarProductoEnSucursal(5,pPepsi);
+            Data.x.AgregarProductoEnSucursal(9,pPepsi);
+    
 
 
 
-            // Manejo De INventario:
+            // Manejo De INventario: Listo
             //Actualizar Producto Alejandra - nombre y precio
-            Singleton.Ins.ModificarProducto(pPepsi.Id,"nombre", 66.26);
+            Data.x.ModificarProducto(pPepsi.Id,"SuperCola", 66.26);
 
 
+            //Actualizar Relacion Alejandra  Listo-               stock
+            Data.x.ModificarRelacion($"{sucur.Id}^{pPepsi.Id}", 5);
+
+            //Actualizar Sucursal Alejandra nomrbre y direccion Listo
+            Data.x.ModificarSucursal(sucur.Id, "Nombre Sucursal","Direccion");
 
 
-            //Actualizar Relacion Alejandra -                     stock
-            Singleton.Ins.ModificarRelacion("idProducto^idsucursal", 5);
-
-            //Actualizar Sucursal Alejandra nomrbre y direccion
-            Singleton.Ins.ModificarSucursal(pPepsi.Id, "Nombre Sucursal","Direccion");
 
             //Agregar varios productos por medio de CSV Alejandra
-
 
 
             //Actualizar Datos Alejandra
