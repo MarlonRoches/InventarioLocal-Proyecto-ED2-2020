@@ -165,6 +165,45 @@ namespace Desarrollo_Proyecto_ED_2
                 //no lo contiene
             }
         }
+
+        public void Transferir(string idProducto,string idEmisior, string idReceptor)
+        {
+            //existe el producto?
+            CargarProductos();
+            if (Productos.ContainsKey(idProducto))
+            {
+                //existe la sucursal?
+                CargarSucursales();
+                if (Sucursales.ContainsKey(idReceptor)&& Sucursales.ContainsKey(idEmisior))
+                {
+                    //existe la relacion?
+                    CargarRelacion();
+                    if (Relacion.ContainsKey($"{idEmisior}^{idProducto}") && Relacion.ContainsKey($"{idReceptor}^{idProducto}"))
+                    {
+                        Relacion[NombreRelacional].Stock = stockNuevo;
+                        UpdateRelacion();
+                        //cambia el stock
+                    }
+                    else
+                    {
+                        //no existe la relacion
+                    }
+                }
+                else
+                {
+                    //no existe la sucursal
+
+                }
+                //comprimir y cifrar
+                UpdateRelacion();
+            }
+            else
+            {
+                // no exisiste el producto
+            }
+        }
+
+
         #region Tablas
         public void CrearTablas()
         {
@@ -263,7 +302,6 @@ namespace Desarrollo_Proyecto_ED_2
         }
 
         #endregion
-
         #region VariablesGlobales
         string original_path = string.Empty;
         string index_p10 = "2416390875";
@@ -593,6 +631,7 @@ namespace Desarrollo_Proyecto_ED_2
             return permmuted;
         }
         #endregion
+        #region Lzw
         public string CompresionLZW(string json)
         {
             int Iteracion;
@@ -659,32 +698,32 @@ namespace Desarrollo_Proyecto_ED_2
                 {
                     foreach (var item in DiccionarioWK)
                     {
-                        salida+=($"{item.Key}|{item.Value}♀");
+                        salida += ($"{item.Key}|{item.Value}♀");
                     }
                     salida += ("END");
                     diccionarioescrito = false;
                 }
             }
-            
+
             Dictionary<string, int> ObetnerDiccionarioInicial()
             {
                 var Diccionario = new Dictionary<string, int>();
                 Iteracion = 0;
-                    foreach (var Caracter in json) //Crear diccionario de letras
+                foreach (var Caracter in json) //Crear diccionario de letras
+                {
+                    if (!Diccionario.ContainsKey(Convert.ToString(Caracter)))
                     {
-                        if (!Diccionario.ContainsKey(Convert.ToString(Caracter)))
-                        {
-                            Diccionario.Add(Convert.ToString(Caracter), Iteracion);
-                            Iteracion++;
-                        }
+                        Diccionario.Add(Convert.ToString(Caracter), Iteracion);
+                        Iteracion++;
                     }
+                }
                 return Diccionario;
             }
             return salida;
         }
         public string DescompresionLZW(string json)
         {
-            var fileTemp = new FileStream("temp.txt",FileMode.Create);
+            var fileTemp = new FileStream("temp.txt", FileMode.Create);
             var writer = new StreamWriter(fileTemp);
             writer.Write(json);
             writer.Close();
@@ -761,5 +800,7 @@ namespace Desarrollo_Proyecto_ED_2
             File.Delete("D:\\Pry_ED2\\temp.txt");
             return Texto_Descompreso;
         }
+
+        #endregion
     }
 }
