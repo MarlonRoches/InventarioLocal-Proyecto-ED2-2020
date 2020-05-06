@@ -166,7 +166,7 @@ namespace Desarrollo_Proyecto_ED_2
             }
         }
 
-        public void Transferir(string idProducto,string idEmisior, string idReceptor)
+        public void Transferir(string idProducto,string idEmisior, string idReceptor, int cantidadDeTransferencia)
         {
             //existe el producto?
             CargarProductos();
@@ -176,11 +176,16 @@ namespace Desarrollo_Proyecto_ED_2
                 CargarSucursales();
                 if (Sucursales.ContainsKey(idReceptor)&& Sucursales.ContainsKey(idEmisior))
                 {
-                    //existe la relacion?
+                    //existen ambas relaciones?
                     CargarRelacion();
                     if (Relacion.ContainsKey($"{idEmisior}^{idProducto}") && Relacion.ContainsKey($"{idReceptor}^{idProducto}"))
-                    {
-                        Relacion[NombreRelacional].Stock = stockNuevo;
+                    {//si existen ambos
+
+                        for (int i = 0; i < cantidadDeTransferencia; i++)
+                        {
+                            Relacion[$"{idEmisior}^{idProducto}"].Stock--;
+                            Relacion[$"{idReceptor}^{idProducto}"].Stock++;
+                        }
                         UpdateRelacion();
                         //cambia el stock
                     }
