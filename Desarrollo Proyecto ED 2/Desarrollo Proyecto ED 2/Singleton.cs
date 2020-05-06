@@ -115,6 +115,56 @@ namespace Desarrollo_Proyecto_ED_2
                 //no lo contiene
             }
         }
+        public void ModificarRelacion(string NombreRelacional, int stockNuevo)
+        {
+            //existe el producto?
+            CargarProductos();
+            if (Productos.ContainsKey(NombreRelacional.Split('^')[1]))
+            {
+                //existe la sucursal?
+                CargarSucursales();
+                if (Sucursales.ContainsKey(NombreRelacional.Split('^')[0]))
+                {
+                    //existe la relacion?
+                    CargarRelacion();
+                    if (Relacion.ContainsKey(NombreRelacional))
+                    {
+                        Relacion[NombreRelacional].Stock = stockNuevo;
+                        UpdateRelacion();
+                        //cambia el stock
+                    }
+                    else
+                    {
+                        //no existe la relacion
+                    }
+                }
+                else
+                {
+                    //no existe la sucursal
+
+                }
+                //comprimir y cifrar
+                UpdateRelacion();
+            }
+            else
+            {
+                // no exisiste el producto
+            }
+        }
+        public void ModificarSucursal(int id, string nombrenuevo, string NuevaDireccion)
+        {
+            CargarSucursales();
+            if (Sucursales.ContainsKey($"{id}"))
+            {
+                Sucursales[$"{id}"].Nombre= nombrenuevo;
+                Sucursales[$"{id}"].Direccion= NuevaDireccion;
+                UpdateSucursales();
+            }
+            else
+            {
+                //no lo contiene
+            }
+        }
         #region Tablas
         public void CrearTablas()
         {
@@ -160,7 +210,7 @@ namespace Desarrollo_Proyecto_ED_2
                 }
             
         }
-        public void CargarProductos()
+         void CargarProductos()
         {
             var Raw = new StreamReader("Productos.txt");
             var json = Raw.ReadToEnd();
@@ -169,14 +219,14 @@ namespace Desarrollo_Proyecto_ED_2
 
 
         }
-        public void CargarSucursales()
+         void CargarSucursales()
         {
             var Raw = new StreamReader("Sucursales.txt");
             var json = Raw.ReadToEnd();
             Raw.Close();
             Sucursales = JsonConvert.DeserializeObject<Dictionary<string, Sucursal>>(SDESDecifrado("1010101100", "1100110111", json.Trim()));
         }
-        public void CargarRelacion()
+         void CargarRelacion()
         {
             var Raw = new StreamReader("Relacion.txt");
             var json = Raw.ReadToEnd();
@@ -231,7 +281,7 @@ namespace Desarrollo_Proyecto_ED_2
         #region MetodosSDES
 
         //CIFRANDO
-        public string[] ReturnKeys(string KeyGet)
+         string[] ReturnKeys(string KeyGet)
         {
             S0[0, 0] = "01";
             S0[0, 1] = "00";
@@ -271,7 +321,7 @@ namespace Desarrollo_Proyecto_ED_2
             var KEYAR = Generarkeys(originalkey);
             return KEYAR;
         }
-        public string SDESCifrado(string llave1, string llave2,string path)
+         string SDESCifrado(string llave1, string llave2,string path)
         {
             S0[0, 0] = "01";
             S0[0, 1] = "00";
@@ -316,7 +366,7 @@ namespace Desarrollo_Proyecto_ED_2
             return Salida;
         }
         //decifrado
-        public string SDESDecifrado(string llave1, string llave2,string path)
+         string SDESDecifrado(string llave1, string llave2,string path)
         {
             S0[0, 0] = "01";
             S0[0, 1] = "00";
