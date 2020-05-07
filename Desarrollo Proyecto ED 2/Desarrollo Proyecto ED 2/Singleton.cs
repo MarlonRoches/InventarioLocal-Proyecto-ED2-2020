@@ -140,7 +140,44 @@ namespace Desarrollo_Proyecto_ED_2
             file.Close();
         }
 
-        
+        internal List<Relacion> ListaDeRelaciones()
+        {
+            var output = new List<Relacion>();
+            CargarSucursales();
+            foreach (var item in Relacion)
+            {
+                output.Add(item.Value);
+            }
+
+            output =output.OrderBy(o => $"{o.Id_Sucursal}^{o.Id_Producto}").ToList(); ;
+            return output;
+        }
+
+        internal List<Producto> ListaDeProductos()
+        {
+            var output = new List<Producto>();
+            CargarSucursales();
+            foreach (var item in Productos)
+            {
+                output.Add(item.Value);
+            }
+
+            output = output.OrderBy(o => o.Id).ToList(); ;
+            return output;
+        }
+
+        public List<Sucursal> ListaDeSucursales()
+        {
+            var output = new List<Sucursal>();
+            CargarSucursales();
+            foreach (var item in Sucursales)
+            {
+                output.Add(item.Value);
+            }
+
+        output =output.OrderBy(o => o.Id).ToList(); ;
+            return output;
+        }
 
         public void ModificarRelacion(string NombreRelacional, int stockNuevo)
         {

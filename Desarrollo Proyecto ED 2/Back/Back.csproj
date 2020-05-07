@@ -10,5 +10,9 @@
     <Compile Include="..\Desarrollo Proyecto ED 2\Modelos\Sucursal_Producto.cs" Link="Sucursal_Producto.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
+  </ItemGroup>
+
 
 </Project>
