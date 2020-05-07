@@ -140,6 +140,8 @@ namespace Desarrollo_Proyecto_ED_2
             file.Close();
         }
 
+        
+
         public void ModificarRelacion(string NombreRelacional, int stockNuevo)
         {
             //existe el producto?

@@ -103,12 +103,35 @@ namespace Desarrollo_Proyecto_ED_2
 
             //Agregar varios productos por medio de CSV Alejandra
             Data.x.LeerCSV("CSV_de_Prueba.csv");
+
             //Listados: Alejandra
             //Sucursal
+            List<Sucursal> sucursals = Data.x.ListaDeSucursales();
             //Producto
+            List<Producto> products = Data.x.ListaDeProductos();
             //sucursal- Producto
-
-
+            List<Relacion> relations = Data.x.ListaDeRelaciones();
+            Console.WriteLine("Sucursales"); 
+            Console.WriteLine("----------------------------"); 
+            foreach (var item in sucursals)
+            {
+                Console.WriteLine($"{item.Id} - {item.Nombre} - {item.Direccion}");
+            }
+            Console.WriteLine("Productos"); 
+            Console.WriteLine("----------------------------"); 
+            foreach (var item in products)
+            {
+                Console.WriteLine($"{item.Id} - {item.Nombre} - {item.Precio}");
+            }
+            
+            Console.WriteLine("Relaciones"); 
+            Console.WriteLine("----------------------------"); 
+            
+            foreach (var item in relations)
+            {
+                Console.WriteLine($"{item.Id_Producto} - {item.Id_Producto} - {item.Stock} unidades");
+            }
+            Console.ReadLine();
 
             //datos transportables Compresion Lista, falta implementar  -  Marlon
 
