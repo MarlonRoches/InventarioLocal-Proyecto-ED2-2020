@@ -115,6 +115,31 @@ namespace Desarrollo_Proyecto_ED_2
                 //no lo contiene
             }
         }
+
+        public void LeerCSV(string path)
+        {
+            var file = new FileStream(path,FileMode.Open);
+            var reader = new StreamReader(file);
+            var linea = reader.ReadLine();
+            CargarProductos();
+            while (linea!=null)
+            {
+                var arrayAux = linea.Split(';');
+                var Productonuevo = new Producto()
+                {
+                    Id = int.Parse(arrayAux[0]),
+                    Nombre = arrayAux[1],
+                    Precio = double.Parse(arrayAux[2])
+
+                };
+                AgregarProducto(Productonuevo);
+                linea = reader.ReadLine();
+            }
+            UpdateProductos();
+            reader.Close();
+            file.Close();
+        }
+
         public void ModificarRelacion(string NombreRelacional, int stockNuevo)
         {
             //existe el producto?
@@ -637,7 +662,7 @@ namespace Desarrollo_Proyecto_ED_2
         }
         #endregion
         #region Lzw
-        public string CompresionLZW(string json)
+         string CompresionLZW(string json)
         {
             int Iteracion;
             string salida = "";  //cambiar por escritura del archivo
@@ -726,7 +751,7 @@ namespace Desarrollo_Proyecto_ED_2
             }
             return salida;
         }
-        public string DescompresionLZW(string json)
+         string DescompresionLZW(string json)
         {
             var fileTemp = new FileStream("temp.txt", FileMode.Create);
             var writer = new StreamWriter(fileTemp);

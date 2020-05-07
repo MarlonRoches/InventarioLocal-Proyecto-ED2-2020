@@ -91,7 +91,6 @@ namespace Desarrollo_Proyecto_ED_2
             Data.x.AgregarProductoEnSucursal(EbenEzer.Id,Pollo,20);
             Data.x.AgregarProductoEnSucursal(PolloFeliz.Id,Pollo,6);
 
-            Data.x.Transferir(Pollo.Id.ToString(), EbenEzer.Id.ToString(), PolloFeliz.Id.ToString(), 10);
             // Manejo De INventario: Listo
             //Actualizar Producto Alejandra - nombre y precio
             Data.x.ModificarProducto(pPepsi.Id,"SuperCola", 66.26);
@@ -100,10 +99,10 @@ namespace Desarrollo_Proyecto_ED_2
             //Actualizar Sucursal Alejandra nomrbre y direccion Listo
             Data.x.ModificarSucursal(EbenEzer.Id, "Nombre Sucursal","Direccion");
             //Transferir Por sucursales Alejandra
-
+            Data.x.Transferir(Pollo.Id.ToString(), EbenEzer.Id.ToString(), PolloFeliz.Id.ToString(), 10);
 
             //Agregar varios productos por medio de CSV Alejandra
-
+            Data.x.LeerCSV("CSV_de_Prueba.csv");
             //Listados: Alejandra
             //Sucursal
             //Producto
