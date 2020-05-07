@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 namespace Desarrollo_Proyecto_ED_2
 {
-    class Singleton
+    class Data
     {
         class Nodo
         {
@@ -16,12 +16,12 @@ namespace Desarrollo_Proyecto_ED_2
             public double Probabilidad;
             public byte Caracter;
         }
-        private static Singleton _instance = null;
-        public static Singleton Ins
+        private static Data _instance = null;
+        public static Data x
         {
             get
             {
-                if (_instance == null) _instance = new Singleton();
+                if (_instance == null) _instance = new Data();
                 return _instance;
             }
         }
@@ -58,15 +58,17 @@ namespace Desarrollo_Proyecto_ED_2
             }
 
         }
-        
-        public void AgregarProductoEnSucursal(int idSucursal, Producto Producto)
+        public void AgregarProductoEnSucursal(int idSucursal, Producto Producto,int stock)
         {
+            //existe el producto?
             CargarProductos();
             if (Productos.ContainsKey($"{Producto.Id}"))
             {
+            //existe la sucursal?
                 CargarSucursales();
                 if (Sucursales.ContainsKey($"{idSucursal}"))
                 {
+            //existe la relacion?
                     CargarRelacion();
                     if (!Relacion.ContainsKey($"{idSucursal}^{Producto.Id}"))
                     {
@@ -74,7 +76,7 @@ namespace Desarrollo_Proyecto_ED_2
                         {
                             Id_Producto = Producto.Id,
                             Id_Sucursal = idSucursal,
-                            Stock = 1
+                            Stock = stock
                         };
                         Relacion.Add($"{idSucursal}^{Producto.Id}", NuevaRelacion);
                         //agrega sucursal
@@ -95,8 +97,142 @@ namespace Desarrollo_Proyecto_ED_2
             }
             else
             {
+                // no exisiste el producto
             }
 
+        }
+        public void ModificarProducto(int id,string nombrenuevo, double precionuevo)
+        {
+            CargarProductos();
+            if (Productos.ContainsKey($"{id}"))
+            {
+                Productos[$"{id}"].Nombre = nombrenuevo;
+                Productos[$"{id}"].Precio= precionuevo;
+                UpdateProductos();
+            }
+            else
+            {
+                //no lo contiene
+            }
+        }
+
+        public void LeerCSV(string path)
+        {
+            var file = new FileStream(path,FileMode.Open);
+            var reader = new StreamReader(file);
+            var linea = reader.ReadLine();
+            CargarProductos();
+            while (linea!=null)
+            {
+                var arrayAux = linea.Split(';');
+                var Productonuevo = new Producto()
+                {
+                    Id = int.Parse(arrayAux[0]),
+                    Nombre = arrayAux[1],
+                    Precio = double.Parse(arrayAux[2])
+
+                };
+                AgregarProducto(Productonuevo);
+                linea = reader.ReadLine();
+            }
+            UpdateProductos();
+            reader.Close();
+            file.Close();
+        }
+
+        
+
+        public void ModificarRelacion(string NombreRelacional, int stockNuevo)
+        {
+            //existe el producto?
+            CargarProductos();
+            if (Productos.ContainsKey(NombreRelacional.Split('^')[1]))
+            {
+                //existe la sucursal?
+                CargarSucursales();
+                if (Sucursales.ContainsKey(NombreRelacional.Split('^')[0]))
+                {
+                    //existe la relacion?
+                    CargarRelacion();
+                    if (Relacion.ContainsKey(NombreRelacional))
+                    {
+                        Relacion[NombreRelacional].Stock = stockNuevo;
+                        UpdateRelacion();
+                        //cambia el stock
+                    }
+                    else
+                    {
+                        //no existe la relacion
+                    }
+                }
+                else
+                {
+                    //no existe la sucursal
+
+                }
+                //comprimir y cifrar
+                UpdateRelacion();
+            }
+            else
+            {
+                // no exisiste el producto
+            }
+        }
+        public void ModificarSucursal(int id, string nombrenuevo, string NuevaDireccion)
+        {
+            CargarSucursales();
+            if (Sucursales.ContainsKey($"{id}"))
+            {
+                Sucursales[$"{id}"].Nombre= nombrenuevo;
+                Sucursales[$"{id}"].Direccion= NuevaDireccion;
+                UpdateSucursales();
+            }
+            else
+            {
+                //no lo contiene
+            }
+        }
+
+        public void Transferir(string idProducto,string idEmisior, string idReceptor, int cantidadDeTransferencia)
+        {
+            //existe el producto?
+            CargarProductos();
+            if (Productos.ContainsKey(idProducto))
+            {
+                //existe la sucursal?
+                CargarSucursales();
+                if (Sucursales.ContainsKey(idReceptor)&& Sucursales.ContainsKey(idEmisior))
+                {
+                    //existen ambas relaciones?
+                    CargarRelacion();
+                    if (Relacion.ContainsKey($"{idEmisior}^{idProducto}") && Relacion.ContainsKey($"{idReceptor}^{idProducto}"))
+                    {//si existen ambos
+
+                        for (int i = 0; i < cantidadDeTransferencia; i++)
+                        {
+                            Relacion[$"{idEmisior}^{idProducto}"].Stock--;
+                            Relacion[$"{idReceptor}^{idProducto}"].Stock++;
+                        }
+                        UpdateRelacion();
+                        //cambia el stock
+                    }
+                    else
+                    {
+                        //no existe la relacion
+                    }
+                }
+                else
+                {
+                    //no existe la sucursal
+
+                }
+                //comprimir y cifrar
+                UpdateRelacion();
+            }
+            else
+            {
+                // no exisiste el producto
+            }
         }
 
 
@@ -120,31 +256,32 @@ namespace Desarrollo_Proyecto_ED_2
                 }
                 if (!File.Exists("Sucursales.txt"))
                 {
-                var cifrado = SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Sucursales));
-                var File = new FileStream("Sucursales.txt", FileMode.Create);
+                    var cifrado = SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Sucursales));
+                    var File = new FileStream("Sucursales.txt", FileMode.Create);
 
-                var wrtr = new StreamWriter(File);
-                ////comprimir
-                // Huffman(cifrado);
-                wrtr.WriteLine(cifrado);
-                wrtr.Close();
-                File.Close();
-            }
+                    var wrtr = new StreamWriter(File);
+                    ////comprimir
+                    // Huffman(cifrado);
+                    wrtr.WriteLine(cifrado);
+                    wrtr.Close();
+                    File.Close();
+               
+                }
                 if (!File.Exists("Relacion.txt"))
                 {
                 var cifrado = SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Relacion));
-                var File = new FileStream("Relacion.txt", FileMode.Create);
+                    var File = new FileStream("Relacion.txt", FileMode.Create);
 
-                var wrtr = new StreamWriter(File);
-                ////comprimir
-                // Huffman(cifrado);
-                wrtr.WriteLine(cifrado);
-                wrtr.Close();
-                File.Close();
-            }
+                    var wrtr = new StreamWriter(File);
+                    ////comprimir
+                    // Huffman(cifrado);
+                    wrtr.WriteLine(cifrado);
+                    wrtr.Close();
+                    File.Close();
+                }
             
         }
-        public void CargarProductos()
+         void CargarProductos()
         {
             var Raw = new StreamReader("Productos.txt");
             var json = Raw.ReadToEnd();
@@ -153,14 +290,14 @@ namespace Desarrollo_Proyecto_ED_2
 
 
         }
-        public void CargarSucursales()
+         void CargarSucursales()
         {
             var Raw = new StreamReader("Sucursales.txt");
             var json = Raw.ReadToEnd();
             Raw.Close();
             Sucursales = JsonConvert.DeserializeObject<Dictionary<string, Sucursal>>(SDESDecifrado("1010101100", "1100110111", json.Trim()));
         }
-        public void CargarRelacion()
+         void CargarRelacion()
         {
             var Raw = new StreamReader("Relacion.txt");
             var json = Raw.ReadToEnd();
@@ -197,7 +334,6 @@ namespace Desarrollo_Proyecto_ED_2
         }
 
         #endregion
-
         #region VariablesGlobales
         string original_path = string.Empty;
         string index_p10 = "2416390875";
@@ -215,7 +351,7 @@ namespace Desarrollo_Proyecto_ED_2
         #region MetodosSDES
 
         //CIFRANDO
-        public string[] ReturnKeys(string KeyGet)
+         string[] ReturnKeys(string KeyGet)
         {
             S0[0, 0] = "01";
             S0[0, 1] = "00";
@@ -255,7 +391,7 @@ namespace Desarrollo_Proyecto_ED_2
             var KEYAR = Generarkeys(originalkey);
             return KEYAR;
         }
-        public string SDESCifrado(string llave1, string llave2,string path)
+         string SDESCifrado(string llave1, string llave2,string path)
         {
             S0[0, 0] = "01";
             S0[0, 1] = "00";
@@ -300,7 +436,7 @@ namespace Desarrollo_Proyecto_ED_2
             return Salida;
         }
         //decifrado
-        public string SDESDecifrado(string llave1, string llave2,string path)
+         string SDESDecifrado(string llave1, string llave2,string path)
         {
             S0[0, 0] = "01";
             S0[0, 1] = "00";
@@ -527,7 +663,8 @@ namespace Desarrollo_Proyecto_ED_2
             return permmuted;
         }
         #endregion
-        public string CompresionLZW(string json)
+        #region Lzw
+         string CompresionLZW(string json)
         {
             int Iteracion;
             string salida = "";  //cambiar por escritura del archivo
@@ -593,32 +730,32 @@ namespace Desarrollo_Proyecto_ED_2
                 {
                     foreach (var item in DiccionarioWK)
                     {
-                        salida+=($"{item.Key}|{item.Value}♀");
+                        salida += ($"{item.Key}|{item.Value}♀");
                     }
                     salida += ("END");
                     diccionarioescrito = false;
                 }
             }
-            
+
             Dictionary<string, int> ObetnerDiccionarioInicial()
             {
                 var Diccionario = new Dictionary<string, int>();
                 Iteracion = 0;
-                    foreach (var Caracter in json) //Crear diccionario de letras
+                foreach (var Caracter in json) //Crear diccionario de letras
+                {
+                    if (!Diccionario.ContainsKey(Convert.ToString(Caracter)))
                     {
-                        if (!Diccionario.ContainsKey(Convert.ToString(Caracter)))
-                        {
-                            Diccionario.Add(Convert.ToString(Caracter), Iteracion);
-                            Iteracion++;
-                        }
+                        Diccionario.Add(Convert.ToString(Caracter), Iteracion);
+                        Iteracion++;
                     }
+                }
                 return Diccionario;
             }
             return salida;
         }
-        public string DescompresionLZW(string json)
+         string DescompresionLZW(string json)
         {
-            var fileTemp = new FileStream("temp.txt",FileMode.Create);
+            var fileTemp = new FileStream("temp.txt", FileMode.Create);
             var writer = new StreamWriter(fileTemp);
             writer.Write(json);
             writer.Close();
@@ -695,5 +832,7 @@ namespace Desarrollo_Proyecto_ED_2
             File.Delete("D:\\Pry_ED2\\temp.txt");
             return Texto_Descompreso;
         }
+
+        #endregion
     }
 }
