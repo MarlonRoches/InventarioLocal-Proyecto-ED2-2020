@@ -58,7 +58,7 @@ namespace Desarrollo_Proyecto_ED_2
             }
 
         }
-        public void AgregarProductoEnSucursal(int idSucursal, Producto Producto)
+        public void AgregarProductoEnSucursal(int idSucursal, Producto Producto,int stock)
         {
             //existe el producto?
             CargarProductos();
@@ -76,7 +76,7 @@ namespace Desarrollo_Proyecto_ED_2
                         {
                             Id_Producto = Producto.Id,
                             Id_Sucursal = idSucursal,
-                            Stock = 1
+                            Stock = stock
                         };
                         Relacion.Add($"{idSucursal}^{Producto.Id}", NuevaRelacion);
                         //agrega sucursal

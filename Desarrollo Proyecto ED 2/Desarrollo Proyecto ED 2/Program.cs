@@ -19,14 +19,13 @@ namespace Desarrollo_Proyecto_ED_2
             //cambiar a archivos locales de bin/debug Listo
             Data.x.CrearTablas();
             //Crear sucursal - Marlon Listo
-            var sucur = new Sucursal
+            var EbenEzer = new Sucursal
             {
                 Nombre = "EbenEzer",
                 Id = 5,
                 Direccion= "Zona 5"
             };
-            Data.x.AgregarSucursal(sucur);
-            Data.x.AgregarSucursal(sucur);
+
             var VerduraDura = new Sucursal
             {
                 Nombre = "VerduraDura",
@@ -51,16 +50,19 @@ namespace Desarrollo_Proyecto_ED_2
                 Id = 48,
                 Direccion = "Mundo"
             };
-
+            Data.x.AgregarSucursal(EbenEzer);
             Data.x.AgregarSucursal(VerduraDura);
+            Data.x.AgregarSucursal(PolloFeliz);
+            Data.x.AgregarSucursal(VacaLoca);
+            Data.x.AgregarSucursal(COVID19);
+
             //Agregar Un Producto - Marlon Listo
             var pPepsi = new Producto()
             {
                 Id= 852,
                 Nombre= "Pepsi",
                 Precio = 56.3
-            }; 
-            
+            };
             var Carne = new Producto()
             {
                 Id= 48,
@@ -80,17 +82,23 @@ namespace Desarrollo_Proyecto_ED_2
                 Precio = 56.3
             };
             Data.x.AgregarProducto(pPepsi);
+            Data.x.AgregarProducto(Carne);
+            Data.x.AgregarProducto(Pollo);
+            Data.x.AgregarProducto(Virus);
             //Crear relacion - Marlon  Listo
-            Data.x.AgregarProductoEnSucursal(5,pPepsi);
-            Data.x.AgregarProductoEnSucursal(5,pPepsi);
-            Data.x.AgregarProductoEnSucursal(9,pPepsi);
+            Data.x.AgregarProductoEnSucursal(EbenEzer.Id,pPepsi,20);
+            Data.x.AgregarProductoEnSucursal(EbenEzer.Id,Carne,20);
+            Data.x.AgregarProductoEnSucursal(EbenEzer.Id,Pollo,20);
+            Data.x.AgregarProductoEnSucursal(PolloFeliz.Id,Pollo,6);
+
+            Data.x.Transferir(Pollo.Id.ToString(), EbenEzer.Id.ToString(), PolloFeliz.Id.ToString(), 10);
             // Manejo De INventario: Listo
             //Actualizar Producto Alejandra - nombre y precio
             Data.x.ModificarProducto(pPepsi.Id,"SuperCola", 66.26);
             //Actualizar Relacion Alejandra  Listo-               stock
-            Data.x.ModificarRelacion($"{sucur.Id}^{pPepsi.Id}", 5);
+            Data.x.ModificarRelacion($"{EbenEzer.Id}^{pPepsi.Id}", 5);
             //Actualizar Sucursal Alejandra nomrbre y direccion Listo
-            Data.x.ModificarSucursal(sucur.Id, "Nombre Sucursal","Direccion");
+            Data.x.ModificarSucursal(EbenEzer.Id, "Nombre Sucursal","Direccion");
             //Transferir Por sucursales Alejandra
 
 
