@@ -101,80 +101,6 @@ namespace Desarrollo_Proyecto_ED_2
             }
 
         }
-       
-        public void ModificarProducto(int id,string nombrenuevo, double precionuevo)
-        {
-            CargarProductos();
-            if (Productos.ContainsKey($"{id}"))
-            {
-                Productos[$"{id}"].Nombre = nombrenuevo;
-                Productos[$"{id}"].Precio= precionuevo;
-                UpdateProductos();
-            }
-            else
-            {
-                //no lo contiene
-            }
-        }
-        public void LeerCSV(string path)
-        {
-            var file = new FileStream(path,FileMode.Open);
-            var reader = new StreamReader(file);
-            var linea = reader.ReadLine();
-            CargarProductos();
-            while (linea!=null)
-            {
-                var arrayAux = linea.Split(';');
-                var Productonuevo = new Producto()
-                {
-                    Id = int.Parse(arrayAux[0]),
-                    Nombre = arrayAux[1],
-                    Precio = double.Parse(arrayAux[2])
-
-                };
-                AgregarProducto(Productonuevo);
-                linea = reader.ReadLine();
-            }
-            UpdateProductos();
-            reader.Close();
-            file.Close();
-        }
-        internal List<Relacion> ListaDeRelaciones()
-        {
-            var output = new List<Relacion>();
-            CargarSucursales();
-            foreach (var item in Relacion)
-            {
-                output.Add(item.Value);
-            }
-
-            output =output.OrderBy(o => $"{o.Id_Sucursal}^{o.Id_Producto}").ToList(); ;
-            return output;
-        }
-        internal List<Producto> ListaDeProductos()
-        {
-            var output = new List<Producto>();
-            CargarSucursales();
-            foreach (var item in Productos)
-            {
-                output.Add(item.Value);
-            }
-
-            output = output.OrderBy(o => o.Id).ToList(); ;
-            return output;
-        }
-        public List<Sucursal> ListaDeSucursales()
-        {
-            var output = new List<Sucursal>();
-            CargarSucursales();
-            foreach (var item in Sucursales)
-            {
-                output.Add(item.Value);
-            }
-
-        output =output.OrderBy(o => o.Id).ToList(); ;
-            return output;
-        }
         public void ModificarRelacion(string NombreRelacional, int stockNuevo)
         {
             //existe el producto?
@@ -225,6 +151,81 @@ namespace Desarrollo_Proyecto_ED_2
                 //no lo contiene
             }
         }
+       
+        public void ModificarProducto(int id,string nombrenuevo, double precionuevo)
+        {
+            CargarProductos();
+            if (Productos.ContainsKey($"{id}"))
+            {
+                Productos[$"{id}"].Nombre = nombrenuevo;
+                Productos[$"{id}"].Precio= precionuevo;
+                UpdateProductos();
+            }
+            else
+            {
+                //no lo contiene
+            }
+        }
+        public void LeerCSV(string path)
+        {
+            var file = new FileStream(path,FileMode.Open);
+            var reader = new StreamReader(file);
+            var linea = reader.ReadLine();
+            CargarProductos();
+            while (linea!=null)
+            {
+                var arrayAux = linea.Split(';');
+                var Productonuevo = new Producto()
+                {
+                    Id = int.Parse(arrayAux[0]),
+                    Nombre = arrayAux[1],
+                    Precio = double.Parse(arrayAux[2])
+
+                };
+                AgregarProducto(Productonuevo);
+                linea = reader.ReadLine();
+            }
+            UpdateProductos();
+            reader.Close();
+            file.Close();
+        }
+
+        internal List<Relacion> ListaDeRelaciones()
+        {
+            var output = new List<Relacion>();
+            CargarSucursales();
+            foreach (var item in Relacion)
+            {
+                output.Add(item.Value);
+            }
+
+            output =output.OrderBy(o => $"{o.Id_Sucursal}^{o.Id_Producto}").ToList(); ;
+            return output;
+        }
+        internal List<Producto> ListaDeProductos()
+        {
+            var output = new List<Producto>();
+            CargarSucursales();
+            foreach (var item in Productos)
+            {
+                output.Add(item.Value);
+            }
+
+            output = output.OrderBy(o => o.Id).ToList(); ;
+            return output;
+        }
+        public List<Sucursal> ListaDeSucursales()
+        {
+            var output = new List<Sucursal>();
+            CargarSucursales();
+            foreach (var item in Sucursales)
+            {
+                output.Add(item.Value);
+            }
+
+        output =output.OrderBy(o => o.Id).ToList(); ;
+            return output;
+        }
         public void Transferir(string idProducto,string idEmisior, string idReceptor, int cantidadDeTransferencia)
         {
             //existe el producto?
@@ -239,14 +240,21 @@ namespace Desarrollo_Proyecto_ED_2
                     CargarRelacion();
                     if (Relacion.ContainsKey($"{idEmisior}^{idProducto}") && Relacion.ContainsKey($"{idReceptor}^{idProducto}"))
                     {//si existen ambos
-
-                        for (int i = 0; i < cantidadDeTransferencia; i++)
+                        if (Relacion[$"{idEmisior}^{idProducto}"].Stock <cantidadDeTransferencia)
                         {
-                            Relacion[$"{idEmisior}^{idProducto}"].Stock--;
-                            Relacion[$"{idReceptor}^{idProducto}"].Stock++;
+
+                            for (int i = 0; i < cantidadDeTransferencia; i++)
+                            {
+                                Relacion[$"{idEmisior}^{idProducto}"].Stock--;
+                                Relacion[$"{idReceptor}^{idProducto}"].Stock++;
+                            }
+                            UpdateRelacion();
+                            //cambia el stock
                         }
-                        UpdateRelacion();
-                        //cambia el stock
+                        else
+                        {
+                            //no hay suficientes
+                        }
                     }
                     else
                     {
