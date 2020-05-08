@@ -101,6 +101,8 @@ namespace Desarrollo_Proyecto_ED_2
             }
 
         }
+        
+        
         public void ModificarRelacion(string NombreRelacional, int stockNuevo)
         {
             //existe el producto?
@@ -150,8 +152,7 @@ namespace Desarrollo_Proyecto_ED_2
             {
                 //no lo contiene
             }
-        }
-       
+        } 
         public void ModificarProducto(int id,string nombrenuevo, double precionuevo)
         {
             CargarProductos();
@@ -166,29 +167,8 @@ namespace Desarrollo_Proyecto_ED_2
                 //no lo contiene
             }
         }
-        public void LeerCSV(string path)
-        {
-            var file = new FileStream(path,FileMode.Open);
-            var reader = new StreamReader(file);
-            var linea = reader.ReadLine();
-            CargarProductos();
-            while (linea!=null)
-            {
-                var arrayAux = linea.Split(';');
-                var Productonuevo = new Producto()
-                {
-                    Id = int.Parse(arrayAux[0]),
-                    Nombre = arrayAux[1],
-                    Precio = double.Parse(arrayAux[2])
+       
 
-                };
-                AgregarProducto(Productonuevo);
-                linea = reader.ReadLine();
-            }
-            UpdateProductos();
-            reader.Close();
-            file.Close();
-        }
 
         internal List<Relacion> ListaDeRelaciones()
         {
@@ -226,6 +206,7 @@ namespace Desarrollo_Proyecto_ED_2
         output =output.OrderBy(o => o.Id).ToList(); ;
             return output;
         }
+
         public void Transferir(string idProducto,string idEmisior, string idReceptor, int cantidadDeTransferencia)
         {
             //existe el producto?
@@ -274,7 +255,30 @@ namespace Desarrollo_Proyecto_ED_2
                 // no exisiste el producto
             }
         }
+        
+        public void LeerCSV(string path)
+        {
+            var file = new FileStream(path,FileMode.Open);
+            var reader = new StreamReader(file);
+            var linea = reader.ReadLine();
+            CargarProductos();
+            while (linea!=null)
+            {
+                var arrayAux = linea.Split(';');
+                var Productonuevo = new Producto()
+                {
+                    Id = int.Parse(arrayAux[0]),
+                    Nombre = arrayAux[1],
+                    Precio = double.Parse(arrayAux[2])
 
+                };
+                AgregarProducto(Productonuevo);
+                linea = reader.ReadLine();
+            }
+            UpdateProductos();
+            reader.Close();
+            file.Close();
+        }
 
         #region Tablas
         public void CrearTablas()

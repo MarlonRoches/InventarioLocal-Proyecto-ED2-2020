@@ -8,10 +8,15 @@ using Desarrollo_Proyecto_ED_2;
 using Newtonsoft.Json;
 namespace Back.Controllers
 {
-    [Route("Manejo/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class InventarioController : ControllerBase
     {
+        [HttpGet]
+        public string Inicio()
+        {
+            return "Fiz";
+        }
        [HttpPost ("AgregarSucursal")]
        public ObjectResult AgregarSucursal([FromBody]object json)
        {
