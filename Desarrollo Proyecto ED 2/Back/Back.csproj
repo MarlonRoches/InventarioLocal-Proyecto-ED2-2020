@@ -9,6 +9,8 @@
     <Compile Include="..\Desarrollo Proyecto ED 2\Modelos\Sucursal.cs" Link="Sucursal.cs" />
     <Compile Include="..\Desarrollo Proyecto ED 2\Modelos\Sucursal_Producto.cs" Link="Sucursal_Producto.cs" />
     <Compile Include="..\Desarrollo Proyecto ED 2\Singleton.cs" Link="Singleton.cs" />
+    <Compile Include="..\Front\Models\Input.cs" Link="Input.cs" />
+    <Compile Include="..\Front\Models\Transferencia.cs" Link="Transferencia.cs" />
   </ItemGroup>
 
   <ItemGroup>

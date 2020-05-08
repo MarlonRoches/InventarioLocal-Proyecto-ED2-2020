@@ -140,6 +140,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Input.cs" />
     <Compile Include="Models\Transferencia.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -190,7 +191,7 @@
     <Content Include="Views\Inventario\ModificarSucursal.cshtml" />
     <Content Include="Views\Inventario\ModificarProducto.cshtml" />
     <Content Include="Views\Inventario\Transferir.cshtml" />
-    <Content Include="Views\Inventario\LeerCSV.cshtml" />
+    <Content Include="Views\Inventario\Importar_CSV.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

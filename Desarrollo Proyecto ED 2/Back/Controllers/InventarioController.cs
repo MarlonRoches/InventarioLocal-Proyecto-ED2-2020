@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Desarrollo_Proyecto_ED_2;
 using Newtonsoft.Json;
+using Front.Models;
 namespace Back.Controllers
+
 {
     [Route("[controller]")]
     [ApiController]
@@ -118,12 +120,27 @@ namespace Back.Controllers
         }
 
         [HttpPost("LeerCSV")]
-        public ObjectResult LeerCSV([FromBody]string Ruta)
+        public ObjectResult LeerCSV([FromBody]object Ruta)
         {
             try
             {
 
-                Data.x.LeerCSV(Ruta);
+                Data.x.LeerCSV(JsonConvert.DeserializeObject<Input>(Ruta.ToString()).Ruta);
+                return Ok("Exito");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error ");
+            }
+        }
+        [HttpPost("TransferirProductos")]
+        public ObjectResult TransferirProductos([FromBody]object Json)
+        {
+            var Datos = JsonConvert.DeserializeObject<Transferencia>(Json.ToString());
+            try
+            {
+
+                Data.x.Transferir(Datos.idProducto, Datos.idEmisior, Datos.idReceptor, Datos.cantidadDeTransferencia);
                 return Ok("Exito");
             }
             catch (Exception)

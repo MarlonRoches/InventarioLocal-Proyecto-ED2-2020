@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Desarrollo_Proyecto_ED_2;
 using Newtonsoft.Json;
-
+using Front.Models;
 namespace Front.Controllers
 {
     public class InventarioController : Controller
@@ -42,9 +42,9 @@ namespace Front.Controllers
                 var nuevo = new Sucursal()
                 {
                     Id = int.Parse(collection["Id"]),
-                    Direccion= (collection["Direccion"]),
-                    Nombre=    (collection["Nombre"])
-                    
+                    Direccion = (collection["Direccion"]),
+                    Nombre = (collection["Nombre"])
+
 
                 };
                 var json = JsonConvert.SerializeObject(nuevo);
@@ -53,7 +53,7 @@ namespace Front.Controllers
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 var respose = await cliente.PostAsync("https://localhost:44383/Inventario/AgregarSucursal", content);
                 var ol = respose.Content.ReadAsStringAsync();
-                
+
                 return RedirectToAction("ListaDeSucursales");
             }
             catch
@@ -266,7 +266,7 @@ namespace Front.Controllers
             var respose = await cliente.GetAsync("https://localhost:44383/Inventario/ListaDeSucursales");
             respose.EnsureSuccessStatusCode();
             string responseBody = await respose.Content.ReadAsStringAsync();
-            
+
             var lista = JsonConvert.DeserializeObject<List<Sucursal>>(responseBody);
             return View(lista);
         }
@@ -275,9 +275,46 @@ namespace Front.Controllers
         {
             return View();
         }
-        public ActionResult LeerCSV()
+        [HttpPost]
+        public async Task<ActionResult> Transferir(FormCollection collection)
+        {
+
+            var nuevo = new Transferencia()
+            {
+                idProducto = collection["idProducto"],
+                idEmisior = collection["idEmisior"],
+                idReceptor = collection["idReceptor"],
+                cantidadDeTransferencia = int.Parse(collection["cantidadDeTransferencia"])
+            };
+            // TODO: Add update logic here
+            var json = JsonConvert.SerializeObject(nuevo);
+            var cliente = new HttpClient();
+
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var respose = await cliente.PostAsync("https://localhost:44383/Inventario/TransferirProductos", content);
+            var ol = respose.Content.ReadAsStringAsync();
+
+            return RedirectToAction("ListaDeRelaciones");
+
+        }
+
+        public ActionResult Importar_CSV()
         {
             return View();
+        }
+        [HttpPost]
+        public async Task<ActionResult> Importar_CSV(FormCollection collection)
+        {
+            var Nuevo = new Input()
+            {
+                Ruta = collection["Ruta"]
+            };
+            var cliente = new HttpClient();
+            var json = JsonConvert.SerializeObject(Nuevo);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var respose = await cliente.PostAsync("https://localhost:44383/Inventario/LeerCSV", content);
+
+            return RedirectToAction("ListaDeProductos");
         }
     }
 }

@@ -221,7 +221,7 @@ namespace Desarrollo_Proyecto_ED_2
                     CargarRelacion();
                     if (Relacion.ContainsKey($"{idEmisior}^{idProducto}") && Relacion.ContainsKey($"{idReceptor}^{idProducto}"))
                     {//si existen ambos
-                        if (Relacion[$"{idEmisior}^{idProducto}"].Stock <cantidadDeTransferencia)
+                        if (!(Relacion[$"{idEmisior}^{idProducto}"].Stock <cantidadDeTransferencia))
                         {
 
                             for (int i = 0; i < cantidadDeTransferencia; i++)
