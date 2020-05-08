@@ -58,11 +58,11 @@ namespace Desarrollo_Proyecto_ED_2
             }
 
         }
-        public void AgregarProductoEnSucursal(int idSucursal, Producto Producto,int stock)
+        public void AgregarProductoEnSucursal(int idSucursal, int idProducto,int stock)
         {
             //existe el producto?
             CargarProductos();
-            if (Productos.ContainsKey($"{Producto.Id}"))
+            if (Productos.ContainsKey($"{idProducto}"))
             {
             //existe la sucursal?
                 CargarSucursales();
@@ -70,20 +70,20 @@ namespace Desarrollo_Proyecto_ED_2
                 {
             //existe la relacion?
                     CargarRelacion();
-                    if (!Relacion.ContainsKey($"{idSucursal}^{Producto.Id}"))
+                    if (!Relacion.ContainsKey($"{idSucursal}^{idProducto}"))
                     {
                         var NuevaRelacion = new Relacion()
                         {
-                            Id_Producto = Producto.Id,
+                            Id_Producto = idProducto,
                             Id_Sucursal = idSucursal,
                             Stock = stock
                         };
-                        Relacion.Add($"{idSucursal}^{Producto.Id}", NuevaRelacion);
+                        Relacion.Add($"{idSucursal}^{idProducto}", NuevaRelacion);
                         //agrega sucursal
                     }
                     else
                     {
-                        Relacion[$"{idSucursal}^{Producto.Id}"].Stock++;
+                        Relacion[$"{idSucursal}^{idProducto}"].Stock++;
                         //aumenta el stock
                     }
                 }
@@ -101,6 +101,7 @@ namespace Desarrollo_Proyecto_ED_2
             }
 
         }
+       
         public void ModificarProducto(int id,string nombrenuevo, double precionuevo)
         {
             CargarProductos();
@@ -115,7 +116,6 @@ namespace Desarrollo_Proyecto_ED_2
                 //no lo contiene
             }
         }
-
         public void LeerCSV(string path)
         {
             var file = new FileStream(path,FileMode.Open);
@@ -139,7 +139,6 @@ namespace Desarrollo_Proyecto_ED_2
             reader.Close();
             file.Close();
         }
-
         internal List<Relacion> ListaDeRelaciones()
         {
             var output = new List<Relacion>();
@@ -152,7 +151,6 @@ namespace Desarrollo_Proyecto_ED_2
             output =output.OrderBy(o => $"{o.Id_Sucursal}^{o.Id_Producto}").ToList(); ;
             return output;
         }
-
         internal List<Producto> ListaDeProductos()
         {
             var output = new List<Producto>();
@@ -165,7 +163,6 @@ namespace Desarrollo_Proyecto_ED_2
             output = output.OrderBy(o => o.Id).ToList(); ;
             return output;
         }
-
         public List<Sucursal> ListaDeSucursales()
         {
             var output = new List<Sucursal>();
@@ -178,7 +175,6 @@ namespace Desarrollo_Proyecto_ED_2
         output =output.OrderBy(o => o.Id).ToList(); ;
             return output;
         }
-
         public void ModificarRelacion(string NombreRelacional, int stockNuevo)
         {
             //existe el producto?
@@ -229,7 +225,6 @@ namespace Desarrollo_Proyecto_ED_2
                 //no lo contiene
             }
         }
-
         public void Transferir(string idProducto,string idEmisior, string idReceptor, int cantidadDeTransferencia)
         {
             //existe el producto?
