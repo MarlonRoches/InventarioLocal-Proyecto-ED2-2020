@@ -54,7 +54,7 @@ namespace Front.Controllers
                 var respose = await cliente.PostAsync("https://localhost:44383/Inventario/AgregarSucursal", content);
                 var ol = respose.Content.ReadAsStringAsync();
                 
-                return RedirectToAction("Index");
+                return RedirectToAction("ListaDeSucursales");
             }
             catch
             {
@@ -88,7 +88,7 @@ namespace Front.Controllers
                 var respose = await cliente.PostAsync("https://localhost:44383/Inventario/AgregarProducto", content);
                 var ol = respose.Content.ReadAsStringAsync();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("ListaDeProductos");
             }
             catch
             {
@@ -122,7 +122,7 @@ namespace Front.Controllers
                 var respose = await cliente.PostAsync("https://localhost:44383/Inventario/AgregarRelacion", content);
                 var ol = respose.Content.ReadAsStringAsync();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("ListaDeRelaciones");
             }
             catch
             {
@@ -138,13 +138,27 @@ namespace Front.Controllers
 
         // POST: Inventario/Edit/5
         [HttpPost]
-        public ActionResult ModificarRelacion(FormCollection collection)
+        public async Task<ActionResult> ModificarRelacion(FormCollection collection)
         {
             try
             {
                 // TODO: Add update logic here
+                var nuevo = new Relacion()
+                {
+                    Stock = int.Parse(collection["Stock"]),
+                    Id_Producto = int.Parse(collection["Id_Producto"]),
+                    Id_Sucursal = int.Parse(collection["Id_Sucursal"])
 
-                return RedirectToAction("Index");
+
+                };
+                var json = JsonConvert.SerializeObject(nuevo);
+                var cliente = new HttpClient();
+
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var respose = await cliente.PostAsync("https://localhost:44383/Inventario/AgregarRelacion", content);
+                var ol = respose.Content.ReadAsStringAsync();
+
+                return RedirectToAction("ListaDeRelaciones");
             }
             catch
             {
@@ -160,13 +174,26 @@ namespace Front.Controllers
 
         // POST: Inventario/Edit/5
         [HttpPost]
-        public ActionResult ModificarSucursal(FormCollection collection)
+        public async Task<ActionResult> ModificarSucursal(FormCollection collection)
         {
             try
             {
-                // TODO: Add update logic here
+                var nuevo = new Sucursal()
+                {
+                    Id = int.Parse(collection["Id"]),
+                    Direccion = (collection["Direccion"]),
+                    Nombre = (collection["Nombre"])
 
-                return RedirectToAction("Index");
+
+                };
+                var json = JsonConvert.SerializeObject(nuevo);
+                var cliente = new HttpClient();
+
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var respose = await cliente.PostAsync("https://localhost:44383/Inventario/AgregarSucursal", content);
+                var ol = respose.Content.ReadAsStringAsync();
+
+                return RedirectToAction("ListaDeSucursales");
             }
             catch
             {
@@ -186,9 +213,22 @@ namespace Front.Controllers
         {
             try
             {
-                // TODO: Add update logic here
+                var nuevo = new Producto()
+                {
+                    Id = int.Parse(collection["Id"]),
+                    Precio = double.Parse(collection["Precio"]),
+                    Nombre = (collection["Nombre"])
 
-                return RedirectToAction("Index");
+
+                };
+                var json = JsonConvert.SerializeObject(nuevo);
+                var cliente = new HttpClient();
+
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var respose = await cliente.PostAsync("https://localhost:44383/Inventario/AgregarProducto", content);
+                var ol = respose.Content.ReadAsStringAsync();
+
+                return RedirectToAction("ListaDeProductos");
             }
             catch
             {
