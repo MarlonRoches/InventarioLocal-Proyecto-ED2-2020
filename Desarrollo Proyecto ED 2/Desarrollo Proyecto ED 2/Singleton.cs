@@ -173,7 +173,7 @@ namespace Desarrollo_Proyecto_ED_2
         internal List<Relacion> ListaDeRelaciones()
         {
             var output = new List<Relacion>();
-            CargarSucursales();
+            CargarRelacion();
             foreach (var item in Relacion)
             {
                 output.Add(item.Value);
@@ -185,7 +185,7 @@ namespace Desarrollo_Proyecto_ED_2
         internal List<Producto> ListaDeProductos()
         {
             var output = new List<Producto>();
-            CargarSucursales();
+            CargarProductos();
             foreach (var item in Productos)
             {
                 output.Add(item.Value);
@@ -330,7 +330,7 @@ namespace Desarrollo_Proyecto_ED_2
             var Raw = new StreamReader("Productos.txt");
             var json = Raw.ReadToEnd();
             Raw.Close();
-            Sucursales = JsonConvert.DeserializeObject<Dictionary<string, Sucursal>>(SDESDecifrado("1010101100", "1100110111", json.Trim()));
+            Productos = JsonConvert.DeserializeObject<Dictionary<string, Producto>>(SDESDecifrado("1010101100", "1100110111", json.Trim()));
 
 
         }
@@ -346,7 +346,7 @@ namespace Desarrollo_Proyecto_ED_2
             var Raw = new StreamReader("Relacion.txt");
             var json = Raw.ReadToEnd();
             Raw.Close();
-            Sucursales = JsonConvert.DeserializeObject<Dictionary<string, Sucursal>>(SDESDecifrado("1010101100", "1100110111", json.Trim()));
+            Relacion = JsonConvert.DeserializeObject<Dictionary<string, Relacion>>(SDESDecifrado("1010101100", "1100110111", json.Trim()));
 
 
         }

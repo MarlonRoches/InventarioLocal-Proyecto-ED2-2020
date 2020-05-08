@@ -12,10 +12,11 @@ namespace Back.Controllers
     [ApiController]
     public class InventarioController : ControllerBase
     {
-        [HttpGet]
+        [HttpGet ("Load")]
         public string Inicio()
         {
-            return "Fiz";
+            Data.x.CrearTablas();
+            return "Ok";
         }
        [HttpPost ("AgregarSucursal")]
        public ObjectResult AgregarSucursal([FromBody]object json)
@@ -50,11 +51,11 @@ namespace Back.Controllers
         [HttpPost("AgregarRelacion")]
         public ObjectResult AgregarRelacion([FromBody]object json)
         {
-            var arrar = JsonConvert.DeserializeObject<int[]>(json.ToString());
+            var arrar = JsonConvert.DeserializeObject<Relacion>(json.ToString());
             try
             {
 
-                Data.x.AgregarProductoEnSucursal(arrar[0],arrar[1],arrar[2]);
+                Data.x.AgregarProductoEnSucursal(arrar.Id_Sucursal,arrar.Id_Producto,arrar.Stock);
                 return Ok("Exito");
             }
             catch (Exception)
@@ -131,22 +132,22 @@ namespace Back.Controllers
             }
         }
 
-        [HttpPost("ListaDeRelaciones")]
-        public string ListaDeRelaciones([FromBody]object json)
+        [HttpGet("ListaDeRelaciones")]
+        public string ListaDeRelaciones()
         {
             return JsonConvert.SerializeObject(Data.x.ListaDeRelaciones());
 
         }
 
-        [HttpPost("ListaDeProductos")]
-        public string ListaDeProductos([FromBody]object json)
+        [HttpGet("ListaDeProductos")]
+        public string ListaDeProductos()
         {
             return JsonConvert.SerializeObject(Data.x.ListaDeProductos());
 
         }
 
-        [HttpPost("ListaDeSucursales")]
-        public string ListaDeSucursales([FromBody]object json)
+        [HttpGet("ListaDeSucursales")]
+        public string ListaDeSucursales()
         {
             return JsonConvert.SerializeObject(Data.x.ListaDeSucursales());
 
