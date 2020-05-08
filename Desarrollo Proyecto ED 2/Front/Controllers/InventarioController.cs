@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Desarrollo_Proyecto_ED_2;
@@ -29,16 +30,18 @@ namespace Front.Controllers
 
         // POST: Inventario/Create
         [HttpPost]
-        public async System.Threading.Tasks.Task<ActionResult> AgregarSucursalAsync(FormCollection collection)
+        public async Task<ActionResult> AgregarSucursal(FormCollection collection)
         {
             try
             {
                 // TODO: Add insert logic here
+
+
                 var cliente = new HttpClient();
                 var json = JsonConvert.SerializeObject(new object());
 
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                var respose = await cliente.PostAsync("https://localhost:44313/api/Cuenta/Crear", content);
+                var respose = await cliente.PostAsync("https://localhost:44383/api/Cuenta/Crear", content);
                 return RedirectToAction("Index");
             }
             catch
@@ -88,9 +91,6 @@ namespace Front.Controllers
                 return View();
             }
         }
-
-
-
 
         // GET: Inventario/Edit/5
         public ActionResult ModificarRelacion()
@@ -161,17 +161,17 @@ namespace Front.Controllers
 
         public ActionResult ListaDeRelaciones()
         {
-            return View();
+            return View(new List<Relacion>());
         }
         
         public ActionResult ListaDeProductos()
         {
-            return View();
+            return View(new List<Producto>());
         }
         
         public ActionResult ListaDeSucursales()
         {
-            return View();
+            return View(new List<Sucursal>());
         }
 
         public ActionResult Transferir()

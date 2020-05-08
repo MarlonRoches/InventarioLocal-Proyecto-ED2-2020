@@ -183,6 +183,14 @@
     <Content Include="Views\Inventario\AgregarProducto.cshtml" />
     <Content Include="Views\Inventario\AgregarProductoEnSucursal.cshtml" />
     <Content Include="Views\Inventario\ModificarRelacion.cshtml" />
+    <Content Include="Views\Inventario\Index.cshtml" />
+    <Content Include="Views\Inventario\ListaDeRelaciones.cshtml" />
+    <Content Include="Views\Inventario\ListaDeProductos.cshtml" />
+    <Content Include="Views\Inventario\ListaDeSucursales.cshtml" />
+    <Content Include="Views\Inventario\ModificarSucursal.cshtml" />
+    <Content Include="Views\Inventario\ModificarProducto.cshtml" />
+    <Content Include="Views\Inventario\Transferir.cshtml" />
+    <Content Include="Views\Inventario\LeerCSV.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
