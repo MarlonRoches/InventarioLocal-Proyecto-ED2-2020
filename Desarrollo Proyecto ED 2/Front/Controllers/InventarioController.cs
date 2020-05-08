@@ -155,7 +155,7 @@ namespace Front.Controllers
                 var cliente = new HttpClient();
 
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                var respose = await cliente.PostAsync("https://localhost:44383/Inventario/AgregarRelacion", content);
+                var respose = await cliente.PostAsync("https://localhost:44383/Inventario/ModificarRelacion", content);
                 var ol = respose.Content.ReadAsStringAsync();
 
                 return RedirectToAction("ListaDeRelaciones");
@@ -190,7 +190,7 @@ namespace Front.Controllers
                 var cliente = new HttpClient();
 
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                var respose = await cliente.PostAsync("https://localhost:44383/Inventario/AgregarSucursal", content);
+                var respose = await cliente.PostAsync("https://localhost:44383/Inventario/ModoficarSucursal", content);
                 var ol = respose.Content.ReadAsStringAsync();
 
                 return RedirectToAction("ListaDeSucursales");
@@ -209,7 +209,7 @@ namespace Front.Controllers
 
         // POST: Inventario/Edit/5
         [HttpPost]
-        public ActionResult ModificarProducto(FormCollection collection)
+        public async Task<ActionResult> ModificarProducto(FormCollection collection)
         {
             try
             {
@@ -225,7 +225,7 @@ namespace Front.Controllers
                 var cliente = new HttpClient();
 
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                var respose = await cliente.PostAsync("https://localhost:44383/Inventario/AgregarProducto", content);
+                var respose = await cliente.PostAsync("https://localhost:44383/Inventario/ModificarProducto", content);
                 var ol = respose.Content.ReadAsStringAsync();
 
                 return RedirectToAction("ListaDeProductos");

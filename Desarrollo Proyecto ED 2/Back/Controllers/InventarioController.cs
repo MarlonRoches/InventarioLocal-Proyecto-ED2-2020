@@ -69,11 +69,11 @@ namespace Back.Controllers
         [HttpPost("ModificarRelacion")]
         public ObjectResult ModificarRelacion([FromBody]object json)
         {
-            var arrar = JsonConvert.DeserializeObject<string[]>(json.ToString());
+            var RelacionDeEntrada = JsonConvert.DeserializeObject<Relacion>(json.ToString());
             try
             {
 
-                Data.x.ModificarRelacion(arrar[0], int.Parse(arrar[1]));
+                Data.x.ModificarRelacion($"{RelacionDeEntrada.Id_Sucursal}^{RelacionDeEntrada.Id_Producto}", RelacionDeEntrada.Stock);
                 return Ok("Exito");
             }
             catch (Exception)
@@ -86,11 +86,11 @@ namespace Back.Controllers
         [HttpPost("ModoficarSucursal")]
         public ObjectResult ModoficarSucursal([FromBody]object json)
         {
-            var arrar = JsonConvert.DeserializeObject<string[]>(json.ToString());
+            var ObjetoDeModificacion = JsonConvert.DeserializeObject<Sucursal>(json.ToString());
             try
             {
 
-                Data.x.ModificarSucursal(int.Parse(arrar[0]), arrar[1], arrar[2]);
+                Data.x.ModificarSucursal(ObjetoDeModificacion.Id, ObjetoDeModificacion.Nombre, ObjetoDeModificacion.Direccion);
                 return Ok("Exito");
             }
             catch (Exception)
@@ -104,11 +104,11 @@ namespace Back.Controllers
         [HttpPost("ModificarProducto")]
         public ObjectResult ModificarProducto([FromBody]object json)
         {
-            var arrar = JsonConvert.DeserializeObject<string[]>(json.ToString());
+            var arrar = JsonConvert.DeserializeObject<Producto>(json.ToString());
             try
             {
 
-                Data.x.ModificarProducto(int.Parse(arrar[0]), arrar[1], double.Parse(arrar[2]));
+                Data.x.ModificarProducto(arrar.Id, arrar.Nombre, arrar.Precio);
                 return Ok("Exito");
             }
             catch (Exception)
