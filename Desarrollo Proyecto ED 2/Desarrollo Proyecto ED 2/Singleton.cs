@@ -29,7 +29,9 @@ namespace Desarrollo_Proyecto_ED_2
         Dictionary<string, Producto> Productos = new Dictionary<string, Producto>();
         Dictionary<string, Sucursal> Sucursales = new Dictionary<string, Sucursal>();
         Dictionary<string, Relacion> Relacion = new Dictionary<string, Relacion>();
-
+        public static string RutaProductos = "Productos.txt";
+        public static string RutaSucursales = "Sucursales.txt";
+        public static string RutaRelaciones = "Relacion.txt";
         public void AgregarSucursal(Sucursal Sucursal)
         {
             CargarSucursales();
@@ -58,17 +60,17 @@ namespace Desarrollo_Proyecto_ED_2
             }
 
         }
-        public void AgregarProductoEnSucursal(int idSucursal, int idProducto,int stock)
+        public void AgregarProductoEnSucursal(int idSucursal, int idProducto, int stock)
         {
             //existe el producto?
             CargarProductos();
             if (Productos.ContainsKey($"{idProducto}"))
             {
-            //existe la sucursal?
+                //existe la sucursal?
                 CargarSucursales();
                 if (Sucursales.ContainsKey($"{idSucursal}"))
                 {
-            //existe la relacion?
+                    //existe la relacion?
                     CargarRelacion();
                     if (!Relacion.ContainsKey($"{idSucursal}^{idProducto}"))
                     {
@@ -101,8 +103,8 @@ namespace Desarrollo_Proyecto_ED_2
             }
 
         }
-        
-        
+
+
         public void ModificarRelacion(string NombreRelacional, int stockNuevo)
         {
             //existe el producto?
@@ -144,22 +146,22 @@ namespace Desarrollo_Proyecto_ED_2
             CargarSucursales();
             if (Sucursales.ContainsKey($"{id}"))
             {
-                Sucursales[$"{id}"].Nombre= nombrenuevo;
-                Sucursales[$"{id}"].Direccion= NuevaDireccion;
+                Sucursales[$"{id}"].Nombre = nombrenuevo;
+                Sucursales[$"{id}"].Direccion = NuevaDireccion;
                 UpdateSucursales();
             }
             else
             {
                 //no lo contiene
             }
-        } 
-        public void ModificarProducto(int id,string nombrenuevo, double precionuevo)
+        }
+        public void ModificarProducto(int id, string nombrenuevo, double precionuevo)
         {
             CargarProductos();
             if (Productos.ContainsKey($"{id}"))
             {
                 Productos[$"{id}"].Nombre = nombrenuevo;
-                Productos[$"{id}"].Precio= precionuevo;
+                Productos[$"{id}"].Precio = precionuevo;
                 UpdateProductos();
             }
             else
@@ -167,10 +169,10 @@ namespace Desarrollo_Proyecto_ED_2
                 //no lo contiene
             }
         }
-       
 
 
-        internal List<Relacion> ListaDeRelaciones()
+
+        public List<Relacion> ListaDeRelaciones()
         {
             var output = new List<Relacion>();
             CargarRelacion();
@@ -179,10 +181,10 @@ namespace Desarrollo_Proyecto_ED_2
                 output.Add(item.Value);
             }
 
-            output =output.OrderBy(o => $"{o.Id_Sucursal}^{o.Id_Producto}").ToList(); ;
+            output = output.OrderBy(o => $"{o.Id_Sucursal}^{o.Id_Producto}").ToList(); ;
             return output;
         }
-        internal List<Producto> ListaDeProductos()
+        public List<Producto> ListaDeProductos()
         {
             var output = new List<Producto>();
             CargarProductos();
@@ -203,11 +205,11 @@ namespace Desarrollo_Proyecto_ED_2
                 output.Add(item.Value);
             }
 
-        output =output.OrderBy(o => o.Id).ToList(); ;
+            output = output.OrderBy(o => o.Id).ToList(); ;
             return output;
         }
 
-        public void Transferir(string idProducto,string idEmisior, string idReceptor, int cantidadDeTransferencia)
+        public void Transferir(string idProducto, string idEmisior, string idReceptor, int cantidadDeTransferencia)
         {
             //existe el producto?
             CargarProductos();
@@ -215,13 +217,13 @@ namespace Desarrollo_Proyecto_ED_2
             {
                 //existe la sucursal?
                 CargarSucursales();
-                if (Sucursales.ContainsKey(idReceptor)&& Sucursales.ContainsKey(idEmisior))
+                if (Sucursales.ContainsKey(idReceptor) && Sucursales.ContainsKey(idEmisior))
                 {
                     //existen ambas relaciones?
                     CargarRelacion();
                     if (Relacion.ContainsKey($"{idEmisior}^{idProducto}") && Relacion.ContainsKey($"{idReceptor}^{idProducto}"))
                     {//si existen ambos
-                        if (!(Relacion[$"{idEmisior}^{idProducto}"].Stock <cantidadDeTransferencia))
+                        if (!(Relacion[$"{idEmisior}^{idProducto}"].Stock < cantidadDeTransferencia))
                         {
 
                             for (int i = 0; i < cantidadDeTransferencia; i++)
@@ -255,14 +257,14 @@ namespace Desarrollo_Proyecto_ED_2
                 // no exisiste el producto
             }
         }
-        
+
         public void LeerCSV(string path)
         {
-            var file = new FileStream(path,FileMode.Open);
+            var file = new FileStream(path, FileMode.Open);
             var reader = new StreamReader(file);
             var linea = reader.ReadLine();
             CargarProductos();
-            while (linea!=null)
+            while (linea != null)
             {
                 var arrayAux = linea.Split(';');
                 var Productonuevo = new Producto()
@@ -283,95 +285,95 @@ namespace Desarrollo_Proyecto_ED_2
         #region Tablas
         public void CrearTablas()
         {
-            
-                if (!File.Exists("Productos.txt"))
-                {
-                    ////cifrar
 
-                    var cifrado = SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Productos));
-                    var File = new FileStream("Productos.txt", FileMode.Create);
+            if (!File.Exists(RutaProductos))
+            {
+                ////cifrar
 
-                    var wrtr = new StreamWriter(File);
-                    ////comprimir
-                    // Huffman(cifrado);
-                    wrtr.WriteLine(cifrado);
-                    wrtr.Close();
-                    File.Close();
-                }
-                if (!File.Exists("Sucursales.txt"))
-                {
-                    var cifrado = SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Sucursales));
-                    var File = new FileStream("Sucursales.txt", FileMode.Create);
+                var cifrado = CompresionLZW(SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Productos)));
+                var File = new FileStream(RutaProductos, FileMode.Create);
 
-                    var wrtr = new StreamWriter(File);
-                    ////comprimir
-                    // Huffman(cifrado);
-                    wrtr.WriteLine(cifrado);
-                    wrtr.Close();
-                    File.Close();
-               
-                }
-                if (!File.Exists("Relacion.txt"))
-                {
-                var cifrado = SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Relacion));
-                    var File = new FileStream("Relacion.txt", FileMode.Create);
+                var wrtr = new StreamWriter(File);
+                ////comprimir
+                // Huffman(cifrado);
+                wrtr.WriteLine(cifrado);
+                wrtr.Close();
+                File.Close();
+            }
+            if (!File.Exists(RutaSucursales))
+            {
+                var cifrado =CompresionLZW( SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Sucursales)));
+                var File = new FileStream(RutaSucursales, FileMode.Create);
 
-                    var wrtr = new StreamWriter(File);
-                    ////comprimir
-                    // Huffman(cifrado);
-                    wrtr.WriteLine(cifrado);
-                    wrtr.Close();
-                    File.Close();
-                }
-            
-        }
-         void CargarProductos()
-        {
-            var Raw = new StreamReader("Productos.txt");
-            var json = Raw.ReadToEnd();
-            Raw.Close();
-            Productos = JsonConvert.DeserializeObject<Dictionary<string, Producto>>(SDESDecifrado("1010101100", "1100110111", json.Trim()));
+                var wrtr = new StreamWriter(File);
+                ////comprimir
+                // Huffman(cifrado);
+                wrtr.WriteLine(cifrado);
+                wrtr.Close();
+                File.Close();
 
+            }
+            if (!File.Exists(RutaRelaciones))
+            {
+                var cifrado = CompresionLZW(SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Relacion)));
+                var File = new FileStream(RutaRelaciones, FileMode.Create);
+
+                var wrtr = new StreamWriter(File);
+                ////comprimir
+                // Huffman(cifrado);
+                wrtr.WriteLine(cifrado);
+                wrtr.Close();
+                File.Close();
+            }
 
         }
-         void CargarSucursales()
+        void CargarProductos()
         {
-            var Raw = new StreamReader("Sucursales.txt");
+            var Raw = new StreamReader(RutaProductos);
             var json = Raw.ReadToEnd();
             Raw.Close();
-            Sucursales = JsonConvert.DeserializeObject<Dictionary<string, Sucursal>>(SDESDecifrado("1010101100", "1100110111", json.Trim()));
+            Productos = JsonConvert.DeserializeObject<Dictionary<string, Producto>>(SDESDecifrado("1010101100", "1100110111", DescompresionLZW(json.Trim())));
+
+
         }
-         void CargarRelacion()
+        void CargarSucursales()
         {
-            var Raw = new StreamReader("Relacion.txt");
+            var Raw = new StreamReader(RutaSucursales);
             var json = Raw.ReadToEnd();
             Raw.Close();
-            Relacion = JsonConvert.DeserializeObject<Dictionary<string, Relacion>>(SDESDecifrado("1010101100", "1100110111", json.Trim()));
+            Sucursales = JsonConvert.DeserializeObject<Dictionary<string, Sucursal>>(SDESDecifrado("1010101100", "1100110111", DescompresionLZW(json.Trim())));
+        }
+        void CargarRelacion()
+        {
+            var Raw = new StreamReader(RutaRelaciones);
+            var json = Raw.ReadToEnd();
+            Raw.Close();
+            Relacion = JsonConvert.DeserializeObject<Dictionary<string, Relacion>>(SDESDecifrado("1010101100", "1100110111", DescompresionLZW(json.Trim())));
 
 
         }
         void UpdateProductos()
         {
-            var file = new FileStream("Productos.txt", FileMode.Create);
-            var lol = SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Productos));
+            var file = new FileStream(RutaProductos, FileMode.Create);
+            var lol = CompresionLZW(SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Productos)));
             var writer = new StreamWriter(file);
-            writer.Write(lol); 
+            writer.Write(lol);
             writer.Close();
             file.Close();
         }
         void UpdateRelacion()
         {
-            var file = new FileStream("Relacion.txt", FileMode.Create);
+            var file = new FileStream(RutaRelaciones, FileMode.Create);
             var writer = new StreamWriter(file);
-            var lol = SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Relacion));
+            var lol = CompresionLZW(SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Relacion)));
             writer.Write(lol); writer.Close();
             file.Close();
         }
         void UpdateSucursales()
         {
-            var file = new FileStream("Sucursales.txt", FileMode.Create);
+            var file = new FileStream(RutaSucursales, FileMode.Create);
             var writer = new StreamWriter(file);
-            var lol =SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Sucursales));
+            var lol = CompresionLZW(SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Sucursales)));
             writer.Write(lol);
             writer.Close();
             file.Close();
@@ -395,7 +397,7 @@ namespace Desarrollo_Proyecto_ED_2
         #region MetodosSDES
 
         //CIFRANDO
-         string[] ReturnKeys(string KeyGet)
+        string[] ReturnKeys(string KeyGet)
         {
             S0[0, 0] = "01";
             S0[0, 1] = "00";
@@ -435,7 +437,7 @@ namespace Desarrollo_Proyecto_ED_2
             var KEYAR = Generarkeys(originalkey);
             return KEYAR;
         }
-         string SDESCifrado(string llave1, string llave2,string path)
+        string SDESCifrado(string llave1, string llave2, string path)
         {
             S0[0, 0] = "01";
             S0[0, 1] = "00";
@@ -480,7 +482,7 @@ namespace Desarrollo_Proyecto_ED_2
             return Salida;
         }
         //decifrado
-         string SDESDecifrado(string llave1, string llave2,string path)
+        string SDESDecifrado(string llave1, string llave2, string path)
         {
             S0[0, 0] = "01";
             S0[0, 1] = "00";
@@ -535,7 +537,7 @@ namespace Desarrollo_Proyecto_ED_2
             var MitadDerecha = entrada.Remove(0, 4);
 
             //3 expandir derecho
-            var expandido = Expandir(MitadDerecha).PadLeft(10,'0');
+            var expandido = Expandir(MitadDerecha).PadLeft(10, '0');
 
             //4 xor key1 y lado derecho
             var xorResultado = XOR(key1, expandido);
@@ -563,7 +565,7 @@ namespace Desarrollo_Proyecto_ED_2
             var juntosSwaped = MitadDerecha + paso8;
 
             //paso 11 EP bloque 2 del paso10 
-            var segundoexpandido = Expandir(juntosSwaped.Remove(0, 4)).PadLeft(10,'0');
+            var segundoexpandido = Expandir(juntosSwaped.Remove(0, 4)).PadLeft(10, '0');
             var monico = segundoexpandido.Length;
 
             ////paso12 xor de segundo expandido con key 2
@@ -707,8 +709,9 @@ namespace Desarrollo_Proyecto_ED_2
             return permmuted;
         }
         #endregion
+
         #region Lzw
-         string CompresionLZW(string json)
+        string CompresionLZW(string json)
         {
             int Iteracion;
             string salida = "";  //cambiar por escritura del archivo
@@ -797,7 +800,7 @@ namespace Desarrollo_Proyecto_ED_2
             }
             return salida;
         }
-         string DescompresionLZW(string json)
+        string DescompresionLZW(string json)
         {
             var fileTemp = new FileStream("temp.txt", FileMode.Create);
             var writer = new StreamWriter(fileTemp);
@@ -873,7 +876,9 @@ namespace Desarrollo_Proyecto_ED_2
                     CodigoViejo = CodigoNuevo;
                 }
             }
-            File.Delete("D:\\Pry_ED2\\temp.txt");
+            lector.Close();
+            compreso.Close();
+            File.Delete("temp.txt");
             return Texto_Descompreso;
         }
 

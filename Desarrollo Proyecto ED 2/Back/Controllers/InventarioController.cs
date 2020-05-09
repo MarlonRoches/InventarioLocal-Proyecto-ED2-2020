@@ -174,7 +174,22 @@ namespace Back.Controllers
         [HttpGet("ComprimirDatos")]
         public string ComprimirDatos([FromBody]object Json)
         {
+            var entrada = JsonConvert.DeserializeObject<Comp>(Json.ToString());
 
+            if (entrada.CifrarProductos)
+            {
+
+            }
+
+            if (entrada.CifrarSucursales)
+            {
+
+            }
+
+            if (entrada.CifrarRelaciones)
+            {
+
+            }
             return JsonConvert.SerializeObject(Data.x.ListaDeSucursales());
         }
 

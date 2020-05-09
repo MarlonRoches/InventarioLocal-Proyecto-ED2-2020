@@ -140,6 +140,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Comp.cs" />
     <Compile Include="Models\Input.cs" />
     <Compile Include="Models\Transferencia.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
