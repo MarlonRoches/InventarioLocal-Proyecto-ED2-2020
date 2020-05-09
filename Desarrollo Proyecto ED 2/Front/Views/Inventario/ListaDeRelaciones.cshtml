@@ -38,10 +38,9 @@
                 @Html.DisplayFor(modelItem => item.Stock)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Borrar", "BorrarRelacion", new { idSucursal = item.Id_Sucursal,  idProducto = item.Id_Producto}) |
             </td>
+          
         </tr>
     }
 

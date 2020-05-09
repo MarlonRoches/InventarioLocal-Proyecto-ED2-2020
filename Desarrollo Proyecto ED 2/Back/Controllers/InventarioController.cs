@@ -171,26 +171,30 @@ namespace Back.Controllers
         }
 
 
-        [HttpGet("ComprimirDatos")]
-        public string ComprimirDatos([FromBody]object Json)
+        [HttpPost("BorrarProducto")]
+        public ActionResult BorrarProducto([FromBody]object Json)
         {
-            var entrada = JsonConvert.DeserializeObject<Comp>(Json.ToString());
+            var entrada = JsonConvert.DeserializeObject<Producto>(Json.ToString());
+            Data.x.BorrarProducto(entrada);
 
-            if (entrada.CifrarProductos)
-            {
+            return Ok(); ;
+        }
 
-            }
+        [HttpPost("BorrarSucursal")]
+        public ActionResult BorrarSucursal([FromBody]object Json)
+        {
+            var entrada = JsonConvert.DeserializeObject<Sucursal>(Json.ToString());
+            Data.x.BorrarSucursal(entrada);
+            return Ok(); ;
+        }
 
-            if (entrada.CifrarSucursales)
-            {
+        [HttpPost("BorrarRelacion")]
+        public ActionResult BorrarRelacion([FromBody]object Json)
+        {
+            var entrada = JsonConvert.DeserializeObject<Relacion>(Json.ToString());
+            Data.x.BorrarProductoEnSucursal(entrada.Id_Sucursal,entrada.Id_Producto);
 
-            }
-
-            if (entrada.CifrarRelaciones)
-            {
-
-            }
-            return JsonConvert.SerializeObject(Data.x.ListaDeSucursales());
+            return Ok(); ;
         }
 
 

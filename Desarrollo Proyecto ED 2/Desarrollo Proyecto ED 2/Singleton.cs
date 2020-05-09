@@ -171,6 +171,50 @@ namespace Desarrollo_Proyecto_ED_2
         }
 
 
+        public void BorrarSucursal(Sucursal Sucursal)
+        {
+            CargarSucursales();
+            if (Sucursales.ContainsKey($"{Sucursal.Id}"))
+            {
+                Sucursales.Remove($"{Sucursal.Id}");
+                UpdateSucursales();
+            }
+            else
+            {
+                //ya existe la sucursal
+            }
+
+        }
+        public void BorrarProducto(Producto ProductoNuevo)
+        {
+            CargarProductos();
+            if (Productos.ContainsKey($"{ProductoNuevo.Id}"))
+            {
+                Productos.Remove($"{ProductoNuevo.Id}");
+                UpdateProductos();
+            }
+            else
+            {
+                //ya existe la sucursal
+            }
+
+        }
+        public void BorrarProductoEnSucursal(int idSucursal, int idProducto)
+        {
+            //existe la relacion?
+            CargarRelacion();
+            if (Relacion.ContainsKey($"{idSucursal}^{idProducto}"))
+            {
+                Relacion.Remove($"{idSucursal}^{idProducto}");
+                UpdateRelacion();
+                //borra sucursal
+            }           
+        }
+
+
+
+
+
 
         public List<Relacion> ListaDeRelaciones()
         {

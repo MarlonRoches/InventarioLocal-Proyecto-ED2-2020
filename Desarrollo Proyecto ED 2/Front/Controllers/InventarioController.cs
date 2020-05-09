@@ -22,7 +22,56 @@ namespace Front.Controllers
             return View();
         }
 
-        // GET: Inventario/Create
+
+
+        public async Task<ActionResult> BorrarProducto(int id)
+        {
+            var nuevo = new Producto()
+            {
+                Id = id
+            };
+            var json = JsonConvert.SerializeObject(nuevo);
+            var cliente = new HttpClient();
+
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var respose = await cliente.PostAsync("https://localhost:44383/Inventario/BorrarProducto", content);
+            var ol = respose.Content.ReadAsStringAsync();
+
+            return RedirectToAction("ListaDeProductos");
+        }
+
+        public async Task<ActionResult> BorrarSucursal(int id)
+        {
+            var nuevo = new Sucursal()
+            {
+                Id = id
+            };
+            var json = JsonConvert.SerializeObject(nuevo);
+            var cliente = new HttpClient();
+
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var respose = await cliente.PostAsync("https://localhost:44383/Inventario/BorrarSucursal", content);
+
+            return RedirectToAction("ListaDeSucursales");
+        }
+
+        public async Task<ActionResult> BorrarRelacion(int idSucursal, int idProducto)
+        {
+            var nuevo = new Relacion()
+            {
+                Id_Producto = idProducto,
+                Id_Sucursal = idSucursal
+            };
+            var json = JsonConvert.SerializeObject(nuevo);
+            var cliente = new HttpClient();
+
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var respose = await cliente.PostAsync("https://localhost:44383/Inventario/BorrarRelacion", content);
+
+            return RedirectToAction("ListaDeRelaciones");
+        }
+
+
         public ActionResult AgregarSucursal()
         {
 
