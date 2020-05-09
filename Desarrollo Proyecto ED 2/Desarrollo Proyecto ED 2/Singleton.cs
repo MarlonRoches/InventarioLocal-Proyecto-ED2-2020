@@ -29,9 +29,10 @@ namespace Desarrollo_Proyecto_ED_2
         Dictionary<string, Producto> Productos = new Dictionary<string, Producto>();
         Dictionary<string, Sucursal> Sucursales = new Dictionary<string, Sucursal>();
         Dictionary<string, Relacion> Relacion = new Dictionary<string, Relacion>();
-        public static string RutaProductos = "Productos.txt";
-        public static string RutaSucursales = "Sucursales.txt";
-        public static string RutaRelaciones = "Relacion.txt";
+        public static string RutaProductosPath = "Productos.txt";
+        public static string RutaSucursalesPath = "Sucursales.txt";
+        public static string RutaRelacionesPath = "Relacion.txt";
+        public static string MetadataPath = "Meta.txt";
         public void AgregarSucursal(Sucursal Sucursal)
         {
             CargarSucursales();
@@ -329,13 +330,16 @@ namespace Desarrollo_Proyecto_ED_2
         #region Tablas
         public void CrearTablas()
         {
+            if (!File.Exists(MetadataPath))
+            {
 
-            if (!File.Exists(RutaProductos))
+            }
+            if (!File.Exists(RutaProductosPath))
             {
                 ////cifrar
 
                 var cifrado = CompresionLZW(SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Productos)));
-                var File = new FileStream(RutaProductos, FileMode.Create);
+                var File = new FileStream(RutaProductosPath, FileMode.Create);
 
                 var wrtr = new StreamWriter(File);
                 ////comprimir
@@ -344,10 +348,10 @@ namespace Desarrollo_Proyecto_ED_2
                 wrtr.Close();
                 File.Close();
             }
-            if (!File.Exists(RutaSucursales))
+            if (!File.Exists(RutaSucursalesPath))
             {
                 var cifrado =CompresionLZW( SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Sucursales)));
-                var File = new FileStream(RutaSucursales, FileMode.Create);
+                var File = new FileStream(RutaSucursalesPath, FileMode.Create);
 
                 var wrtr = new StreamWriter(File);
                 ////comprimir
@@ -357,10 +361,10 @@ namespace Desarrollo_Proyecto_ED_2
                 File.Close();
 
             }
-            if (!File.Exists(RutaRelaciones))
+            if (!File.Exists(RutaRelacionesPath))
             {
                 var cifrado = CompresionLZW(SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Relacion)));
-                var File = new FileStream(RutaRelaciones, FileMode.Create);
+                var File = new FileStream(RutaRelacionesPath, FileMode.Create);
 
                 var wrtr = new StreamWriter(File);
                 ////comprimir
@@ -373,7 +377,7 @@ namespace Desarrollo_Proyecto_ED_2
         }
         void CargarProductos()
         {
-            var Raw = new StreamReader(RutaProductos);
+            var Raw = new StreamReader(RutaProductosPath);
             var json = Raw.ReadToEnd();
             Raw.Close();
             Productos = JsonConvert.DeserializeObject<Dictionary<string, Producto>>(SDESDecifrado("1010101100", "1100110111", DescompresionLZW(json.Trim())));
@@ -382,14 +386,14 @@ namespace Desarrollo_Proyecto_ED_2
         }
         void CargarSucursales()
         {
-            var Raw = new StreamReader(RutaSucursales);
+            var Raw = new StreamReader(RutaSucursalesPath);
             var json = Raw.ReadToEnd();
             Raw.Close();
             Sucursales = JsonConvert.DeserializeObject<Dictionary<string, Sucursal>>(SDESDecifrado("1010101100", "1100110111", DescompresionLZW(json.Trim())));
         }
         void CargarRelacion()
         {
-            var Raw = new StreamReader(RutaRelaciones);
+            var Raw = new StreamReader(RutaRelacionesPath);
             var json = Raw.ReadToEnd();
             Raw.Close();
             Relacion = JsonConvert.DeserializeObject<Dictionary<string, Relacion>>(SDESDecifrado("1010101100", "1100110111", DescompresionLZW(json.Trim())));
@@ -398,7 +402,7 @@ namespace Desarrollo_Proyecto_ED_2
         }
         void UpdateProductos()
         {
-            var file = new FileStream(RutaProductos, FileMode.Create);
+            var file = new FileStream(RutaProductosPath, FileMode.Create);
             var lol = CompresionLZW(SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Productos)));
             var writer = new StreamWriter(file);
             writer.Write(lol);
@@ -407,7 +411,7 @@ namespace Desarrollo_Proyecto_ED_2
         }
         void UpdateRelacion()
         {
-            var file = new FileStream(RutaRelaciones, FileMode.Create);
+            var file = new FileStream(RutaRelacionesPath, FileMode.Create);
             var writer = new StreamWriter(file);
             var lol = CompresionLZW(SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Relacion)));
             writer.Write(lol); writer.Close();
@@ -415,7 +419,7 @@ namespace Desarrollo_Proyecto_ED_2
         }
         void UpdateSucursales()
         {
-            var file = new FileStream(RutaSucursales, FileMode.Create);
+            var file = new FileStream(RutaSucursalesPath, FileMode.Create);
             var writer = new StreamWriter(file);
             var lol = CompresionLZW(SDESCifrado("1010101100", "1100110111", JsonConvert.SerializeObject(Sucursales)));
             writer.Write(lol);
