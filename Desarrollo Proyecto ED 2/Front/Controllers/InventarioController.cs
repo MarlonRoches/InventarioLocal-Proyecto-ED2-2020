@@ -13,8 +13,6 @@ namespace Front.Controllers
 {
     public class InventarioController : Controller
     {
-        HttpClient ClienteHttp = new HttpClient();
-
         // GET: Inventario
         public async Task<ActionResult> Index()
         {
@@ -292,7 +290,6 @@ namespace Front.Controllers
 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var respose = await cliente.PostAsync("https://localhost:44383/Inventario/TransferirProductos", content);
-            var ol = respose.Content.ReadAsStringAsync();
 
             return RedirectToAction("ListaDeRelaciones");
 

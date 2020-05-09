@@ -171,6 +171,13 @@ namespace Back.Controllers
         }
 
 
+        [HttpGet("ComprimirDatos")]
+        public string ComprimirDatos([FromBody]object Json)
+        {
+
+            return JsonConvert.SerializeObject(Data.x.ListaDeSucursales());
+        }
+
 
     }
 }
