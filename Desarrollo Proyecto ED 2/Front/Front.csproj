@@ -8,7 +8,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D39A8047-D522-4B4B-9E91-438F643B6C75}</ProjectGuid>
+    <ProjectGuid>{1D841F63-53AE-4960-AE93-92A4A609DC03}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -46,6 +46,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -99,9 +102,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
@@ -117,6 +117,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Desarrollo Proyecto ED 2\Modelos\Bebida.cs">
+      <Link>Models\Bebida.cs</Link>
+    </Compile>
+    <Compile Include="..\Desarrollo Proyecto ED 2\Modelos\Muestra Arbol.cs">
+      <Link>Models\Muestra Arbol.cs</Link>
+    </Compile>
     <Compile Include="..\Desarrollo Proyecto ED 2\Modelos\Producto.cs">
       <Link>Models\Producto.cs</Link>
     </Compile>
@@ -130,9 +136,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InventarioController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Comp.cs" />
+    <Compile Include="Models\Input.cs" />
+    <Compile Include="Models\Transferencia.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +181,18 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Inventario\AgregarSucursal.cshtml" />
+    <Content Include="Views\Inventario\AgregarProducto.cshtml" />
+    <Content Include="Views\Inventario\AgregarProductoEnSucursal.cshtml" />
+    <Content Include="Views\Inventario\ModificarRelacion.cshtml" />
+    <Content Include="Views\Inventario\Index.cshtml" />
+    <Content Include="Views\Inventario\ListaDeRelaciones.cshtml" />
+    <Content Include="Views\Inventario\ListaDeProductos.cshtml" />
+    <Content Include="Views\Inventario\ListaDeSucursales.cshtml" />
+    <Content Include="Views\Inventario\ModificarSucursal.cshtml" />
+    <Content Include="Views\Inventario\ModificarProducto.cshtml" />
+    <Content Include="Views\Inventario\Transferir.cshtml" />
+    <Content Include="Views\Inventario\Importar_CSV.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -204,7 +226,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>59512</DevelopmentServerPort>
+          <DevelopmentServerPort>62600</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>https://localhost:44350/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

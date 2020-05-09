@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Desarrollo_Proyecto_ED_2.Sucursal>
+
+@{
+    ViewBag.Title = "ListaDeSucursales";
+}
+
+<h2>ListaDeSucursales</h2>
+
+<p>
+<p>
+    @Html.ActionLink("← Regresar al menú", "Index")
+    @Html.ActionLink("← Agregar Otra Sucursal", "AgregarSucursal")
+</p></p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Direccion)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Id)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Nombre)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Direccion)
+    </td>
+    <td>
+        @Html.ActionLink("Borrar", "BorrarSucursal", new { id=item.Id}) |
+    </td>
+</tr>
+    }
+
+</table>

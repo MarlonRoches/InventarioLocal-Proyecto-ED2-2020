@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Desarrollo_Proyecto_ED_2.Relacion>
+
+@{
+    ViewBag.Title = "ListaDeRelaciones";
+}
+
+<h2>ListaDeRelaciones</h2>
+
+<p>
+<p>
+    @Html.ActionLink("← Regresar al menú", "Index")
+    @Html.ActionLink("← Agregar Otra Relacion", "AgregarProductoEnSucursal")
+</p></p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id_Sucursal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Id_Producto)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Stock)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id_Sucursal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id_Producto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stock)
+            </td>
+            <td>
+                @Html.ActionLink("Borrar", "BorrarRelacion", new { idSucursal = item.Id_Sucursal,  idProducto = item.Id_Producto}) |
+            </td>
+          
+        </tr>
+    }
+
+</table>

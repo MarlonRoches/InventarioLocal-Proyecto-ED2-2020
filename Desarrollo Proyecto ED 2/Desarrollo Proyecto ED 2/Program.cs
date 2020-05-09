@@ -86,10 +86,10 @@ namespace Desarrollo_Proyecto_ED_2
             Data.x.AgregarProducto(Pollo);
             Data.x.AgregarProducto(Virus);
             //Crear relacion - Marlon  Listo
-            Data.x.AgregarProductoEnSucursal(EbenEzer.Id,pPepsi,20);
-            Data.x.AgregarProductoEnSucursal(EbenEzer.Id,Carne,20);
-            Data.x.AgregarProductoEnSucursal(EbenEzer.Id,Pollo,20);
-            Data.x.AgregarProductoEnSucursal(PolloFeliz.Id,Pollo,6);
+            Data.x.AgregarProductoEnSucursal(EbenEzer.Id, pPepsi.Id,20);
+            Data.x.AgregarProductoEnSucursal(EbenEzer.Id,  Carne.Id,20);
+            Data.x.AgregarProductoEnSucursal(EbenEzer.Id,  Pollo.Id,20);
+            Data.x.AgregarProductoEnSucursal(PolloFeliz.Id,Pollo.Id,6);
 
             // Manejo De INventario: Listo
             //Actualizar Producto Alejandra - nombre y precio

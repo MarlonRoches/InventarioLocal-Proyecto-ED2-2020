@@ -1,0 +1,170 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<ol>
+
+    <li type=”A”>
+        <button style="background:    #15d798;
+border-radius: 14px;
+box-shadow:    7px 7px #444444;
+padding:       20px 46px;
+color:         #ffffff;
+display:       inline-block;
+font:          normal bold 27px/1 " Caviar", sans-serif;
+                text-align: center;
+                text-shadow: 2px 2px #50733e;">
+            @Html.ActionLink("Nuevo Producto", "AgregarProducto", null, new { @class = "my-class" })
+        </button>
+
+        <button style="background:    #ffff00;
+border-radius: 11px;
+box-shadow:    1px 1px #444444;
+padding:       20px 45px;
+color:         #000000;
+display:       inline-block;
+font:          normal bold 26px/1 " Caviar", sans-serif;
+                text-align: center;
+                text-shadow: 1px 1px #50733e;">
+            @Html.ActionLink("Abrir nueva Sucursal", "AgregarSucursal", null, new { @class = "my-class" })
+        </button>
+
+
+        <button style="background:    #3d85c6;
+border-radius: 11px;
+box-shadow:    1px 1px #444444;
+padding:       20px 45px;
+color:         #ffffff;
+display:       inline-block;
+font:          normal bold 26px/1 " Caviar", sans-serif;
+                text-align: center;
+                text-shadow: 1px 1px #000000;">
+            @Html.ActionLink("Distribuir un producto en sucursal", "AgregarProductoEnSucursal", null, new { @class = "my-class" })
+        </button>
+
+
+    </li>
+
+    <li>
+
+        <button style="background: #ff0000; border-radius: 11px; box-shadow: 1px 1px #444444; padding: 20px 45px; color: #ffffff; display: inline-block; font: normal bold 26px/1 " Caviar", sans-serif;
+                text-align: center;
+                text-shadow: 1px 1px #000000;">
+            @Html.ActionLink("Modificar stock de una sucursal", "ModificarRelacion", null, new { @class = "my-class" })
+        </button>
+
+        <button style="background:    #ffe599;
+border-radius: 11px;
+box-shadow:    1px 1px #444444;
+padding:       20px 45px;
+color:         #000000;
+display:       inline-block;
+font:          normal bold 26px/1 " Caviar", sans-serif;
+                text-align: center;
+                text-shadow: 1px 1px #000000;">
+            @Html.ActionLink("Modificar una Sucursal", "ModificarSucursal", null, new { @class = "my-class" })
+        </button>
+
+        <button style="background:    #a2c4c9;
+border-radius: 11px;
+box-shadow:    1px 1px #444444;
+padding:       20px 45px;
+color:         #000000;
+display:       inline-block;
+font:          normal bold 26px/1 " Caviar", sans-serif;
+                text-align: center;
+                text-shadow: 1px 1px #000000;">
+            @Html.ActionLink("Modificar info de Producto", "ModificarProducto", null, new { @class = "my-class" })
+        </button>
+
+    </li>
+
+    <li>
+
+        <button style="background:    #f9cb9c;
+border-radius: 11px;
+box-shadow:    1px 1px #444444;
+padding:       20px 45px;
+color:         #000000;
+display:       inline-block;
+font:          normal bold 26px/1 " Caviar", sans-serif;
+                text-align: center;
+                text-shadow: 1px 1px #000000;">
+            @Html.ActionLink("Ver Stock", "ListaDeRelaciones", null, new { @class = "my-class" })
+        </button>
+
+        <button style="background:    #134f5c;
+border-radius: 11px;
+box-shadow:    1px 1px #444444;
+padding:       20px 45px;
+color:         #ffffff;
+display:       inline-block;
+font:          normal bold 26px/1 " Caviar", sans-serif;
+                text-align: center;
+                text-shadow: 1px 1px #999999;">
+            @Html.ActionLink("Ver productos", "ListaDeProductos", null, new { @class = "my-class" })
+        </button>
+
+        <button style="background:    #990000;
+border-radius: 11px;
+box-shadow:    1px 1px #444444;
+padding:       20px 45px;
+color:         #ffffff;
+display:       inline-block;
+font:          normal bold 26px/1 " Caviar", sans-serif;
+                text-align: center;
+                text-shadow: 1px 1px #999999;">
+            @Html.ActionLink("Ver sucursales", "ListaDeSucursales", null, new { @class = "my-class" })
+        </button>
+
+    </li>
+
+    <li>
+
+        <button style="background:    #3d85c6;
+border-radius: 11px;
+box-shadow:    1px 1px #444444;
+padding:       20px 45px;
+color:         #ffffff;
+display:       inline-block;
+font:          normal bold 26px/1 " Caviar", sans-serif;
+                text-align: center;
+                text-shadow: 1px 1px #000000;">
+            @Html.ActionLink("Transferir entre sucursales", "Transferir", null, new { @class = "my-class" })
+        </button>
+
+        <button style="background:    #38761d;
+border-radius: 11px;
+box-shadow:    1px 1px #444444;
+padding:       20px 45px;
+color:         #ffffff;
+display:       inline-block;
+font:          normal bold 26px/1 " Caviar", sans-serif;
+                text-align: center;
+                text-shadow: 1px 1px #999999;">
+            @Html.ActionLink("Importar CSV", "Importar_CSV", null, new { @class = "my-class" })
+
+        </button>
+    </li>
+
+</ol>
+
+<style>
+    a.my-class {
+        color: #000000
+    }
+
+        a.my-class:active {
+            color: #000000
+        }
+
+        a.my-class:link {
+            color: #000000
+        }
+
+        a.my-class:visited {
+            color: #000000
+        }
+</style>
