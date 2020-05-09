@@ -68,7 +68,7 @@ namespace Back.Controllers
             }
         }
 
-        [HttpPost("ModificarRelacion")]
+        [HttpPut("ModificarRelacion")]
         public ObjectResult ModificarRelacion([FromBody]object json)
         {
             var RelacionDeEntrada = JsonConvert.DeserializeObject<Relacion>(json.ToString());
@@ -85,7 +85,7 @@ namespace Back.Controllers
 
             }
         }
-        [HttpPost("ModoficarSucursal")]
+        [HttpPut("ModoficarSucursal")]
         public ObjectResult ModoficarSucursal([FromBody]object json)
         {
             var ObjetoDeModificacion = JsonConvert.DeserializeObject<Sucursal>(json.ToString());
@@ -103,7 +103,7 @@ namespace Back.Controllers
             }
         }
 
-        [HttpPost("ModificarProducto")]
+        [HttpPut("ModificarProducto")]
         public ObjectResult ModificarProducto([FromBody]object json)
         {
             var arrar = JsonConvert.DeserializeObject<Producto>(json.ToString());
@@ -171,7 +171,7 @@ namespace Back.Controllers
         }
 
 
-        [HttpPost("BorrarProducto")]
+        [HttpPut("BorrarProducto")]
         public ActionResult BorrarProducto([FromBody]object Json)
         {
             var entrada = JsonConvert.DeserializeObject<Producto>(Json.ToString());
@@ -180,7 +180,7 @@ namespace Back.Controllers
             return Ok(); ;
         }
 
-        [HttpPost("BorrarSucursal")]
+        [HttpPut("BorrarSucursal")]
         public ActionResult BorrarSucursal([FromBody]object Json)
         {
             var entrada = JsonConvert.DeserializeObject<Sucursal>(Json.ToString());
@@ -188,7 +188,7 @@ namespace Back.Controllers
             return Ok(); ;
         }
 
-        [HttpPost("BorrarRelacion")]
+        [HttpPut("BorrarRelacion")]
         public ActionResult BorrarRelacion([FromBody]object Json)
         {
             var entrada = JsonConvert.DeserializeObject<Relacion>(Json.ToString());
